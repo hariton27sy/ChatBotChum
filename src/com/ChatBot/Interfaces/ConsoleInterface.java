@@ -1,21 +1,16 @@
 package com.ChatBot.Interfaces;
 
-import com.ChatBot.Core.MessageHandler;
-
 import java.util.Scanner;
 
-public class ConsoleInterface extends InOutInterface {
-    public void main(String[] args) {
-        var bot = new MessageHandler();
+public class ConsoleInterface implements InOutInterface {
+    @java.lang.Override
+    public String Receive() {
         var scanner = new Scanner(System.in);
-        while (true) {
-            var userInput = scanner.nextLine();
-            var answer = bot.HandleMessage(userInput);
-            System.out.println(answer);
-        }
+        return scanner.nextLine();
     }
 
-    public void WriteHelloMessage() {
-        System.out.println("While i can do nothing!");
+    @java.lang.Override
+    public void Send(String answer) {
+        System.out.println(answer);
     }
 }

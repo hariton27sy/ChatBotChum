@@ -1,29 +1,20 @@
 package com.ChatBot;
 
+import com.ChatBot.Core.BotLogic;
+import com.ChatBot.Core.MessageParser;
 import com.ChatBot.Interfaces.ConsoleInterface;
 import com.ChatBot.Interfaces.InOutInterface;
-import com.ChatBot.Interfaces.TelegramInterface;
 
 public class Chefot {
     InOutInterface bot;
 
     public void main(String[] args) {
-        bot = new TelegramInterface();
+        bot = new ConsoleInterface();
         while(true){
             String userInput = bot.Receive();
-            String answer = BotLogic.AnalyzeAndGetAnswer(MessageParser.ParseMessage(userInput));
+            String username = "admin";
+            String answer = BotLogic.analyzeAndGetAnswer(String username, MessageParser.parseMessage(userInput));
             bot.Send(answer);
-        }
-
-
-
-
-        if (args.length == 0) {
-            var inout = new ConsoleInterface();
-            inout.main(new String[0]);
-        }
-        else {
-            System.out.println("Help");
         }
     }
 }

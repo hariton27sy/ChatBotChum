@@ -1,5 +1,4 @@
 package com.ChatBot.Core;
 
-public class BotLogic {
-
+public class Message {
 }
