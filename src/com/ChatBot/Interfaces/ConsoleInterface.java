@@ -4,7 +4,7 @@ import com.ChatBot.Core.MessageHandler;
 
 import java.util.Scanner;
 
-public class ConsoleInterface {
+public class ConsoleInterface extends InOutInterface {
     public void main(String[] args) {
         var bot = new MessageHandler();
         var scanner = new Scanner(System.in);
