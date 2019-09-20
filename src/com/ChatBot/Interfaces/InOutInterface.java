@@ -1,7 +1,7 @@
 package com.ChatBot.Interfaces;
 
 public interface InOutInterface {
-    public String Receive();
+    public String receive();
 
-    public void Send(String answer);
+    public void send(String answer);
 }

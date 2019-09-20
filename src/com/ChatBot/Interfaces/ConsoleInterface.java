@@ -4,13 +4,13 @@ import java.util.Scanner;
 
 public class ConsoleInterface implements InOutInterface {
     @java.lang.Override
-    public String Receive() {
+    public String receive() {
         var scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
 
     @java.lang.Override
-    public void Send(String answer) {
+    public void send(String answer) {
         System.out.println(answer);
     }
 }
