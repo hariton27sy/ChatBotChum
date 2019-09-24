@@ -1,9 +1,10 @@
 package com.ChatBot.Core;
+import List;
 
 public class UserInfo {
-    public String username;
+    public final String Username;
 
-    public String[] hatedFood;
-
-    public String[] history;
+    private List<String> DislikedFood;
+    private List<String> LikedFood;
+    private List<String> history;
 }
