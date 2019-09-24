@@ -1,4 +1,4 @@
 package com.ChatBot.Interfaces;
 
-public class TelegramInterface extends InOutInterface{
+public class TelegramInterface implements InOutInterface{
 }
