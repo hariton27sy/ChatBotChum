@@ -35,20 +35,20 @@ def get_ingredient_from_table(table):
 
 def update_ingredients_data(counter=0):
     try:
-        with open(ingredients_file, 'r') as f:
+        with open(ingredients_file, 'r', encoding='utf-8') as f:
             ingredients_data = json.load(f)
-        with open(ingredients_file_reverse, 'r') as f:
+        with open(ingredients_file_reverse, 'r', encoding='utf-8') as f:
             ingredients_to_id = json.load(f)
 
         try:
             max_id = max(map(int, ingredients_data.keys())) + 1
-        except:
+        except Exception:
             max_id = 1
         for page in get_page():
             ingredients = get_ingredient_from_table(get_ingredients_table(page))
             for ingr in ingredients:
                 if ingr not in ingredients_to_id:
-                    ingredients_data[str(max)] = {
+                    ingredients_data[str(max_id)] = {
                         "name": ingr,
                         "type": "vegetable",
                         "dishes_ids": {}
@@ -57,10 +57,10 @@ def update_ingredients_data(counter=0):
                     max_id += 1
 
             if counter % 10 == 0:
-                with open(ingredients_file, 'w') as f:
-                    json.dump(ingredients_data, f)
-                with open(ingredients_file_reverse, 'w') as f:
-                    json.dump(ingredients_to_id, f)
+                with open(ingredients_file, 'w', encoding='utf-8') as f:
+                    json.dump(ingredients_data, f, ensure_ascii=False)
+                with open(ingredients_file_reverse, 'w', encoding='utf-8') as f:
+                    json.dump(ingredients_to_id, f, ensure_ascii=False)
 
             counter += 1
     except KeyboardInterrupt:
@@ -68,7 +68,7 @@ def update_ingredients_data(counter=0):
 
 
 def main():
-    print(update_ingredients_data())
+    print(update_ingredients_data(23))
 
 
 if __name__ == "__main__":
