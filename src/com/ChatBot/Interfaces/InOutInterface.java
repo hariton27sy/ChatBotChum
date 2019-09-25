@@ -7,7 +7,7 @@ public interface InOutInterface {
 
     void send(String answer);
 
-    void GreetUser(UserInfo user);
+    void greetUser(UserInfo user);
 
     UserInfo initializeNewUser();
 }

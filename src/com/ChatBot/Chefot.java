@@ -17,7 +17,7 @@ public class Chefot {
     public static void main(String[] args) {
         bot = new ConsoleInterface();
         userPool.add(bot.initializeNewUser());
-        bot.GreetUser(userPool.get(userPool.size() - 1));
+        bot.greetUser(userPool.get(userPool.size() - 1));
         while(true){
             for(int i = 0; i < userPool.size(); i++){
                 String userInput = bot.receive();
