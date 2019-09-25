@@ -1,7 +1,7 @@
 package com.ChatBot;
 
 import com.ChatBot.Core.BotLogic;
-import com.ChatBot.Core.MessageParser;
+import com.ChatBot.Core.Message;
 import com.ChatBot.Core.UserInfo;
 import com.ChatBot.Interfaces.ConsoleInterface;
 import com.ChatBot.Interfaces.InOutInterface;
@@ -23,7 +23,7 @@ public class Chefot {
                 String userInput = bot.receive();
                 String answer = BotLogic.analyzeAndGetAnswer(
                         userPool.get(i),
-                        MessageParser.parseMessage(userInput));
+                        new Message(userInput));
                 bot.send(answer);
             }
         }
