@@ -22,11 +22,11 @@ public class ConsoleInterface implements InOutInterface {
 
 
     public void greetUser(UserInfo user){
-        System.out.println(String.format("Hello, %s!", user.username));
+        System.out.println(String.format("Привет, %s!", user.username));
     }
 
     public UserInfo initializeNewUser(){
-        send("Enter your name: ");
+        send("Введите ваше имя: ");
         return new UserInfo(receive());
     }
 }

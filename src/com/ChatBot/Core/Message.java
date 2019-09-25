@@ -8,5 +8,10 @@ public class Message {
 
     public Message(String originalMessage){
         this.originalMessage = originalMessage;
+        // parseMessage()
+    }
+
+    private static Message parseMessage(String userInput) {
+        return new Message(userInput);
     }
 }
