@@ -11,5 +11,6 @@ public class MessageAnalyzer {
         else{
             return "Я не понял вопроса :-(";
         }
+
     }
 }

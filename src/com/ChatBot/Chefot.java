@@ -12,7 +12,7 @@ import java.util.List;
 public class Chefot {
     static InOutInterface bot;
 
-    private final static List<UserInfo> userPool = new ArrayList<UserInfo>();
+    private final static List<UserInfo> userPool = new ArrayList<>();
 
     public static void main(String[] args) {
         bot = new ConsoleInterface();
