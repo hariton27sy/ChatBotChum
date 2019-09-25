@@ -22,11 +22,7 @@ def get_page(counter=0):
 
 
 def get_ingredients_table(data):
-    with open("test.html", mode='w') as f:
-        f.write(data)
-        # print(data)
-        # print(re.search(r'<table class="ingr" align="center">[^\\]*?</table>', data))  # [^\r]*?</table>
-        return re.search(r'<table class="ingr" align="center">[^\\]*?</table>', data).group()
+    return re.search(r'<table class="ingr" align="center">[^\\]*?</table>', data).group()
 
 
 def get_ingredient_from_table(table):
