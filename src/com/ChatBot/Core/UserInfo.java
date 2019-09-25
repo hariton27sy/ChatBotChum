@@ -8,7 +8,7 @@ public class UserInfo {
     private List<String> likedFood;
     private List<String> history;
 
-    public UserInfo(string username){
+    public UserInfo(String username){
         this.username = username;
     }
 }
