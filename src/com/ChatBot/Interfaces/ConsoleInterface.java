@@ -1,5 +1,7 @@
 package com.ChatBot.Interfaces;
 
+import com.ChatBot.Core.UserInfo;
+
 import java.util.Scanner;
 
 public class ConsoleInterface implements InOutInterface {
@@ -16,5 +18,15 @@ public class ConsoleInterface implements InOutInterface {
 
     public void send(String answer) {
         System.out.println(answer);
+    }
+
+
+    public void greetUser(UserInfo user){
+        System.out.println(String.format("Hello, %s!", user.username));
+    }
+
+    public UserInfo initializeNewUser(){
+        send("Enter your name: ");
+        return new UserInfo(receive());
     }
 }

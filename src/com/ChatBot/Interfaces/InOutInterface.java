@@ -1,7 +1,13 @@
 package com.ChatBot.Interfaces;
 
-public interface InOutInterface {
-    public String receive();
+import com.ChatBot.Core.UserInfo;
 
-    public void send(String answer);
+public interface InOutInterface {
+    String receive();
+
+    void send(String answer);
+
+    void GreetUser(UserInfo user);
+
+    UserInfo initializeNewUser();
 }

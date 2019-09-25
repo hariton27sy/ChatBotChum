@@ -1,5 +1,6 @@
 package com.ChatBot.Core;
-import List;
+
+import java.util.List;
 
 public class UserInfo {
     public final String username;
@@ -8,7 +9,7 @@ public class UserInfo {
     private List<String> likedFood;
     private List<String> history;
 
-    public UserInfo(string username){
+    public UserInfo(String username){
         this.username = username;
     }
 }

@@ -1,7 +1,12 @@
 package com.ChatBot.Core;
 
 public class Message {
-    public final String[] ingredients;
-    public final String CookingMethod;
-    public final int time;
+    public String[] ingredients;
+    public String cookingMethod;
+    public int time;
+    public final String originalMessage;
+
+    public Message(String originalMessage){
+        this.originalMessage = originalMessage;
+    }
 }

@@ -2,28 +2,30 @@ package com.ChatBot;
 
 import com.ChatBot.Core.BotLogic;
 import com.ChatBot.Core.MessageParser;
+import com.ChatBot.Core.UserInfo;
 import com.ChatBot.Interfaces.ConsoleInterface;
 import com.ChatBot.Interfaces.InOutInterface;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Chefot {
-    InOutInterface bot;
+    static InOutInterface bot;
 
-    private final List<UserInfo> userPool = new List<UserInfo>;
+    private final static List<UserInfo> userPool = new ArrayList<UserInfo>();
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         bot = new ConsoleInterface();
-        userPool.add(initializeNewUser());
+        userPool.add(bot.initializeNewUser());
+        bot.GreetUser(userPool.get(userPool.size() - 1));
         while(true){
-            foreach(UserInfo user in userPool){
+            for(int i = 0; i < userPool.size(); i++){
                 String userInput = bot.receive();
-                String answer = BotLogic.analyzeAndGetAnswer(username, MessageParser.parseMessage(userInput));
+                String answer = BotLogic.analyzeAndGetAnswer(
+                        userPool.get(i),
+                        MessageParser.parseMessage(userInput));
                 bot.send(answer);
             }
         }
-    }
-
-    private UserInfo initializeNewUser(){
-        bot.send("Enter your name: ")
-        return new UserInfo(bot.receive())
     }
 }
