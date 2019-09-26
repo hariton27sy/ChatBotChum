@@ -17,9 +17,5 @@ public class BotLogic {
     }
 
     private void GetRandomRecipe(){
-        ParseFromRussianFoodDotCom.Recipe[] recipes =
-                new ParseFromRussianFoodDotCom().parseFood();
-
-
     }
 }
