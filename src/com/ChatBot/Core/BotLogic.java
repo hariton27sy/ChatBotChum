@@ -1,5 +1,7 @@
 package com.ChatBot.Core;
 
+import com.ChatBot.DataBases.ParsersFromSites.ParseFromRussianFoodDotCom;
+
 public class BotLogic {
 
     public static String analyzeAndGetAnswer(UserInfo user, Message parsedMessage) {
@@ -12,5 +14,12 @@ public class BotLogic {
         else{
             return "Я не понял вопроса :-( \nПопробуй написать \"/help\" и узнать о моих возможностях!";
         }
+    }
+
+    private void GetRandomRecipe(){
+        ParseFromRussianFoodDotCom.Recipe[] recipes =
+                new ParseFromRussianFoodDotCom().parseFood();
+
+
     }
 }
