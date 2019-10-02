@@ -10,6 +10,6 @@ import java.util.HashSet;
 public class JsonUserDataLoader implements IUserDataLoader {
     @Override
     public HashSet<UserInfo> loadUsers() {
-        throw new NotImplementedException();
+        return new HashSet<>();
     }
 }

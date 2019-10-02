@@ -16,7 +16,7 @@ public class BotLogic {
                     "3. Добавь <название ингредиента> : добавляет ингредиент в запрос.\n";
             //TODO: поиск по тегам.
         }
-        else if (parsedMessage.originalMessage.equalsIgnoreCase("Покажи")){
+        else if (parsedMessage.command.equalsIgnoreCase("Покажи")){
             if(user.getContext() == null){
                 return database.getRandomRecipe().toString();
             }

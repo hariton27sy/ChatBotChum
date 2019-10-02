@@ -19,6 +19,9 @@ public class Chefot {
         //TODO: Multi-user authentication
         userPool.add(authenticateUser());
         bot.send(String.format("Привет, %s!", userPool.get(userPool.size() - 1).username));
+        bot.send("Я - шефот, и могу помочь тебе выбрать блюдо на вечер. Или на утро. Или перекус.\n" +
+                "В общем, не стесняйся, говори, что ты хочешь, а я подскажу ;)\n" +
+                "Для того, чтобы узнать, как со мной работать, напиши '/help'.");
         while(true){
             for(int i = 0; i < userPool.size(); i++){
                 String userInput = bot.receive();

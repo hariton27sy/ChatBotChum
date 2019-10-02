@@ -9,6 +9,6 @@ import java.util.HashSet;
 public class JsonRecipeDataLoader implements IRecipeDataLoader {
     @Override
     public HashSet<Recipe> loadRecipes() {
-        throw new NotImplementedException();
+        return new HashSet<>();
     }
 }
