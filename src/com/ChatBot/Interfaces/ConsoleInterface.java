@@ -19,14 +19,4 @@ public class ConsoleInterface implements InOutInterface {
     public void send(String answer) {
         System.out.println(answer);
     }
-
-
-    public void greetUser(UserInfo user){
-        System.out.println(String.format("Привет, %s!", user.username));
-    }
-
-    public UserInfo initializeNewUser(){
-        send("Введите ваше имя: ");
-        return new UserInfo(receive());
-    }
 }

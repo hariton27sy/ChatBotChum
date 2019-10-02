@@ -1,15 +1,29 @@
 package com.ChatBot.Core;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class UserInfo {
     public final String username;
+    private Context currentContext;
 
-    private List<String> dislikedFood;
-    private List<String> likedFood;
-    private List<String> history;
+    private List<Recipe> dislikedFood;
+    private List<Recipe> likedFood;
+    private List<Recipe> history;
 
     public UserInfo(String username){
         this.username = username;
+    }
+
+    public void clearContext(){
+        currentContext = null;
+    }
+
+    public Context getContext(){
+        return currentContext;
+    }
+
+    public void initContext(HashSet<Recipe> contextData){
+        currentContext = new Context(contextData);
     }
 }

@@ -16,8 +16,9 @@ public class Chefot {
 
     public static void main(String[] args) {
         bot = new ConsoleInterface();
-        userPool.add(bot.initializeNewUser());
-        bot.greetUser(userPool.get(userPool.size() - 1));
+        //TODO: Multi-user authentication
+        userPool.add(authenticateUser());
+        bot.send(String.format("Привет, %s!", userPool.get(userPool.size() - 1).username));
         while(true){
             for(int i = 0; i < userPool.size(); i++){
                 String userInput = bot.receive();
@@ -27,5 +28,10 @@ public class Chefot {
                 bot.send(answer);
             }
         }
+    }
+
+    private static UserInfo authenticateUser(){
+        bot.send("Введите ваше имя:");
+        return new UserInfo(bot.receive());
     }
 }

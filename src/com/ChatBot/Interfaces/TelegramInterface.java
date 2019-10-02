@@ -12,12 +12,4 @@ public class TelegramInterface implements InOutInterface{
         throw new NotImplementedException();
     }
 
-
-    public void greetUser(UserInfo user){
-        throw new NotImplementedException();
-    }
-
-    public UserInfo initializeNewUser(){
-        throw new NotImplementedException();
-    }
 }

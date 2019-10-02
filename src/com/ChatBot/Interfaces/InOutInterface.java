@@ -6,8 +6,4 @@ public interface InOutInterface {
     String receive();
 
     void send(String answer);
-
-    void greetUser(UserInfo user);
-
-    UserInfo initializeNewUser();
 }
