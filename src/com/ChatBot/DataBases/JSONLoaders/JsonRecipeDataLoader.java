@@ -5,16 +5,15 @@ import com.ChatBot.DataBases.IRecipeDataLoader;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 public class JsonRecipeDataLoader implements IRecipeDataLoader {
-    private String recipeDataPath = "../Dishes/Dishes.JSON";
+    private const String recipeDataPath = "D:\\Java\\ChatBot\\src\\com\\ChatBot\\DataBases\\Dishes/Dishes.JSON";
+    private String ingredientsDataPath = "D:/Java/ChatBot/src/com/ChatBot/DataBases/Dishes/Ingredients.JSON";
+
 
     @Override
     public HashSet<Recipe> loadRecipes() {
@@ -59,3 +58,5 @@ class JSONRecipe {
         this.link = link;
     }
 }
+
+class

@@ -3,6 +3,7 @@ package com.ChatBot;
 import com.ChatBot.Core.BotLogic;
 import com.ChatBot.Core.Message;
 import com.ChatBot.Core.UserInfo;
+import com.ChatBot.DataBases.JSONLoaders.JsonUserDataLoader;
 import com.ChatBot.Interfaces.ConsoleInterface;
 import com.ChatBot.Interfaces.InOutInterface;
 
@@ -15,6 +16,8 @@ public class Chefot {
     private final static List<UserInfo> userPool = new ArrayList<>();
 
     public static void main(String[] args) {
+        //TEST
+        var temp = new JsonUserDataLoader().loadUsers();
         bot = new ConsoleInterface();
         //TODO: Multi-user authentication
         userPool.add(authenticateUser());
