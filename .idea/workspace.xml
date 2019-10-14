@@ -2,12 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e75db620-cf67-4c46-922b-368b47e478f6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ChatBotChum.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ChatBotChum.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JSON/Users/Users.JSON" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Request.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IDataStorage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONSerializers/RecipeDeserialize.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Chefot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Chefot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONLoaders/JsonRecipeDataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONLoaders/JsonRecipeDataLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogicTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogicTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Ingredient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/Recipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Recipe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/DataStorage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/Dishes/Dishes.JSON" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/Dishes/IngredientToID.JSON" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/Dishes/Ingredients.JSON" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IRecipeDataLoader.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IUserDataLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONLoaders/JsonRecipeDataLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONLoaders/JsonUserDataLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/RecipeDataStorage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/UserDataStorage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/Users.JSON" beforeDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,8 +35,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -37,13 +55,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1293" />
-    <option name="height" value="813" />
-  </component>
   <component name="ProjectId" id="1RMkFu3TgZMe6Fm6ykNrY9MlhJG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.Annotations" value="false" />
@@ -57,6 +74,12 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Groovy JUnit" value="groovy.util.GroovyTestCase" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -84,9 +107,9 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.Unnamed">
+  <component name="RunManager" selected="Application.Unnamed">
     <configuration name="Unnamed" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="C:/Program Files/Java/jdk-13" />
+      <option name="ALTERNATIVE_JRE_PATH" value="12" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.ChatBot.Chefot" />
@@ -118,16 +141,6 @@
       <item itemvalue="JUnit.Unnamed" />
     </list>
   </component>
-  <component name="ServiceViewManager">
-    <option name="allServicesViewState">
-      <serviceView>
-        <treeState>
-          <expand />
-          <select />
-        </treeState>
-      </serviceView>
-    </option>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -141,6 +154,11 @@
       <workItem from="1569311851006" duration="598000" />
       <workItem from="1569484259364" duration="1029000" />
       <workItem from="1569854140967" duration="30000" />
+      <workItem from="1570087491525" duration="2835000" />
+      <workItem from="1570126814000" duration="684000" />
+      <workItem from="1570689175838" duration="7807000" />
+      <workItem from="1570946638899" duration="13423000" />
+      <workItem from="1571040730143" duration="1248000" />
     </task>
     <servers />
   </component>
@@ -160,12 +178,71 @@
       </map>
     </option>
   </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1570708301470">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1570708301470" />
+    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1570952034552">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1570952034552" />
+    <state width="461" height="466" key="DebuggerActiveHint" timestamp="1570968033721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="461" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1570968033721" />
+    <state width="1877" height="346" key="GridCell.Tab.0.bottom" timestamp="1570981191396">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="346" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
+    <state width="1877" height="346" key="GridCell.Tab.0.center" timestamp="1570981191396">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="346" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
+    <state width="1877" height="346" key="GridCell.Tab.0.left" timestamp="1570981191396">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="346" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
+    <state width="1877" height="346" key="GridCell.Tab.0.right" timestamp="1570981191396">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="346" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
+    <state width="1877" height="346" key="GridCell.Tab.1.bottom" timestamp="1570981191396">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="346" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
+    <state width="1877" height="346" key="GridCell.Tab.1.center" timestamp="1570981191396">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="346" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
+    <state width="1877" height="346" key="GridCell.Tab.1.left" timestamp="1570981191396">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="346" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
+    <state width="1877" height="346" key="GridCell.Tab.1.right" timestamp="1570981191396">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="346" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1571040739792">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1571040739792" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1570965201019">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1570965201019" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONLoaders/JsonRecipeDataLoader.java</url>
-          <line>25</line>
+          <url>file://$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java</url>
+          <line>128</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

@@ -1,70 +1,70 @@
 {
     "1" : {
         "name" : "сливочное масло",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "2" : {
         "name" : "маргарин",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "3" : {
         "name" : "сыр пармезан",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "4" : {
         "name" : "лук репчатый",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "5" : {
         "name" : "болгарский перец",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "6" : {
         "name" : "молоко",
-        "dishes_ids" : [1, 3]
+        "dishesIds" : [1, 3]
     },
     "7" : {
         "name" : "кукурузная мука",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "8" : {
         "name" : "соль",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "9" : {
         "name" : "сыр чедер",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "10" : {
         "name" : "яйца",
-        "dishes_ids" : [1]
+        "dishesIds" : [1]
     },
     "11" : {
         "name" : "яичные желтки",
-        "dishes_ids" : [2]
+        "dishesIds" : [2]
     },
     "12" : {
         "name" : "сахар",
-        "dishes_ids" : [2, 3]
+        "dishesIds" : [2, 3]
     },
     "13" : {
         "name" : "желатин",
-        "dishes_ids" : [2]
+        "dishesIds" : [2]
     },
     "14" : {
         "name" : "шоколад",
-        "dishes_ids" : [2, 3]
+        "dishesIds" : [2, 3]
     },
     "15" : {
         "name" : "сливки",
-        "dishes_ids" : [3]
+        "dishesIds" : [3]
     },
     "16" : {
         "name" : "творог",
-        "dishes_ids" : [3]
+        "dishesIds" : [3]
     },
     "17" : {
         "name" : "ванильный сахар",
-        "dishes_ids" : [3]
+        "dishesIds" : [3]
     }
 }

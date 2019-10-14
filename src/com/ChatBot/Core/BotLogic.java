@@ -1,12 +1,10 @@
 package com.ChatBot.Core;
 
-import com.ChatBot.DataBases.DataStorage;
-
-import java.security.InvalidKeyException;
-import java.util.HashSet;
+import com.ChatBot.DataBases.IDataStorage;
+import com.ChatBot.DataBases.JSONDataStorage;
 
 public class BotLogic {
-    public static DataStorage database = new DataStorage();
+    private static IDataStorage database = new JSONDataStorage();
 
 
     public static String analyzeAndGetAnswer(UserInfo user, Message parsedMessage) {
@@ -34,14 +32,10 @@ public class BotLogic {
         }
         else if (parsedMessage.command.equalsIgnoreCase("Добавь")){
             Ingredient ingredient;
-            try {
-                ingredient = database.getIngredientByName(parsedMessage.args[0]);
-            } catch (InvalidKeyException e) {
-                return "Такого ингредиента в нашей базе не найдено :(";
-            }
-            HashSet<Recipe> newRecipeSet = ingredient.usedIn;
-            newRecipeSet.retainAll(user.getContext().getCurrentSearchResult());
-            user.getContext().setCurrentSearchResult(newRecipeSet);
+            ingredient = database.getIngredientByName(parsedMessage.args[0]);
+            //            HashSet<Recipe> newRecipeSet = ingredient.dishesIds;
+//            newRecipeSet.retainAll(user.getContext().getCurrentSearchResult());
+//            user.getContext().setCurrentSearchResult(newRecipeSet);
             return String.format("По текущему запросу найдено %s блюд. Хотите добавить что-то ещё?", user.getContext().getCurrentSearchResult().size());
         }
         else{
