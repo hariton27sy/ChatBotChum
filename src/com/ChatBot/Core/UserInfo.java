@@ -23,7 +23,7 @@ public class UserInfo {
         return currentContext;
     }
 
-    public void initContext(HashSet<Recipe> contextData){
-        currentContext = new Context(contextData);
+    public void initContext(){
+        currentContext = new Context();
     }
 }

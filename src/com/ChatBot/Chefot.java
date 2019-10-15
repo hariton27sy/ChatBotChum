@@ -6,6 +6,7 @@ import com.ChatBot.Core.UserInfo;
 import com.ChatBot.DataBases.JSONDataStorage;
 import com.ChatBot.Interfaces.ConsoleInterface;
 import com.ChatBot.Interfaces.InOutInterface;
+import jdk.jshell.spi.ExecutionControl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Chefot {
 
     private final static List<UserInfo> userPool = new ArrayList<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionControl.NotImplementedException {
         bot = new ConsoleInterface();
         //TODO: Multi-user authentication
         userPool.add(authenticateUser());

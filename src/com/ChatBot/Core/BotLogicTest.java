@@ -1,5 +1,6 @@
 package com.ChatBot.Core;
 
+import jdk.jshell.spi.ExecutionControl;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BotLogicTest {
 
     //@Test
-    void analyzeAndGetAnswerHelp() {
+    void analyzeAndGetAnswerHelp() throws ExecutionControl.NotImplementedException {
         UserInfo user = new UserInfo("Oleg");
         Message parsedMessage = new Message("/help");
         String actualAnswer = BotLogic.analyzeAndGetAnswer(user, parsedMessage);

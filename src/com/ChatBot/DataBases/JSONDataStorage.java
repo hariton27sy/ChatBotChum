@@ -1,9 +1,6 @@
 package com.ChatBot.DataBases;
 
-import com.ChatBot.Core.Ingredient;
-import com.ChatBot.Core.Recipe;
-import com.ChatBot.Core.Request;
-import com.ChatBot.Core.UserInfo;
+import com.ChatBot.Core.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -100,6 +97,15 @@ public class JSONDataStorage implements IDataStorage {
         int random = (int) (Math.random() * recipes.size());
         Integer[] recipesList = new Integer[recipes.size()];
         recipes.toArray(recipesList);
+        return getRecipe(recipesList[random]);
+    }
+
+    @Override
+    public Recipe getRecipeByRequest(Context context) {
+        var recipesIds = context.getRecipesIds();
+        int random = (int) (Math.random() * recipesIds.size());
+        Integer[] recipesList = new Integer[recipesIds.size()];
+        recipesIds.toArray(recipesList);
         return getRecipe(recipesList[random]);
     }
 

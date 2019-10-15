@@ -3,7 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="e75db620-cf67-4c46-922b-368b47e478f6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JSON/Dishes/Dishes.JSON" beforeDir="false" afterPath="$PROJECT_DIR$/JSON/Dishes/Dishes.JSON" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Chefot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Chefot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogicTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogicTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/Context.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Context.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/UserInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IDataStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IDataStorage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,6 +145,7 @@
       <workItem from="1570689175838" duration="7807000" />
       <workItem from="1570946638899" duration="13423000" />
       <workItem from="1571040730143" duration="3033000" />
+      <workItem from="1571147632807" duration="3961000" />
     </task>
     <servers />
   </component>
@@ -163,10 +170,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1570708301470" />
-    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1570952034552">
+    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1571151495335">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1570952034552" />
+    <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1571151495335" />
     <state width="461" height="466" key="DebuggerActiveHint" timestamp="1570968033721">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -203,10 +210,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="346" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1570981191396" />
-    <state x="655" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1571040739792">
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1571147657894">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="655" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1571040739792" />
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1571147657894" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1570965201019">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -217,12 +224,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java</url>
-          <line>27</line>
+          <line>24</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java</url>
-          <line>128</line>
+          <line>134</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

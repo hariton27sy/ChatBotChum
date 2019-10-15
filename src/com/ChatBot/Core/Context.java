@@ -3,18 +3,23 @@ package com.ChatBot.Core;
 import java.util.HashSet;
 
 public class Context {
-    private HashSet<Recipe> currentSearchResult;
+    private HashSet<Ingredient> ingredients;
+    private HashSet<Integer> recipesIds;
 
-    public Context(HashSet<Recipe> context){
-        currentSearchResult = context;
+    public Context(){
+        ingredients = new HashSet<>();
+        recipesIds = new HashSet<>();
     }
 
-    public HashSet<Recipe> getCurrentSearchResult(){
-        return currentSearchResult;
+    public int addIngredientAndGetRecipesCount(Ingredient ingredient) {
+        if (recipesIds.isEmpty() && ingredients.isEmpty())
+            recipesIds.addAll(ingredient.dishesIds);
+        ingredients.add(ingredient);
+        recipesIds.retainAll(ingredient.dishesIds);
+        return recipesIds.size();
     }
 
-    public void setCurrentSearchResult(HashSet<Recipe> currentSearchResult){
-        this.currentSearchResult = currentSearchResult;
+    public HashSet<Integer> getRecipesIds(){
+        return recipesIds;
     }
-    //TODO: Cancel last request info
 }
