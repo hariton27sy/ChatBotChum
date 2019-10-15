@@ -135,9 +135,7 @@ public class JSONDataStorage implements IDataStorage {
     }
 
     @Override
-    public void updateUserInfo(UserInfo user) {
-        
-    }
+    public void updateUserInfo(UserInfo user) { }
 
     @Override
     public HashSet<Recipe> getAllRecipes() {

@@ -2,29 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e75db620-cf67-4c46-922b-368b47e478f6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JSON/Users/Users.JSON" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Request.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IDataStorage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONSerializers/RecipeDeserialize.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Chefot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Chefot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogicTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogicTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Ingredient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/Recipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Recipe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/DataStorage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/Dishes/Dishes.JSON" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/Dishes/IngredientToID.JSON" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/Dishes/Ingredients.JSON" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IRecipeDataLoader.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IUserDataLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONLoaders/JsonRecipeDataLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONLoaders/JsonUserDataLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/RecipeDataStorage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/UserDataStorage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/Users.JSON" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JSON/Dishes/Dishes.JSON" beforeDir="false" afterPath="$PROJECT_DIR$/JSON/Dishes/Dishes.JSON" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,7 +138,7 @@
       <workItem from="1570126814000" duration="684000" />
       <workItem from="1570689175838" duration="7807000" />
       <workItem from="1570946638899" duration="13423000" />
-      <workItem from="1571040730143" duration="1248000" />
+      <workItem from="1571040730143" duration="3033000" />
     </task>
     <servers />
   </component>
