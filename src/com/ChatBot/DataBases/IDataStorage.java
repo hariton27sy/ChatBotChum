@@ -13,6 +13,7 @@ public interface IDataStorage {
     public Recipe getRecipe(int recipeId);
     public UserInfo getUserInfo(String username);
     public UserInfo getUserInfo(int userId);
+    public String[] getAllIngredients();
 
     public void updateUserInfo(UserInfo user);
 

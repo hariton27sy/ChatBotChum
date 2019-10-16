@@ -5,5 +5,6 @@ public enum commands {
     Add,
     Find,
     Show,
-    ClearRequest
+    ClearRequest,
+    Ingredients
 }

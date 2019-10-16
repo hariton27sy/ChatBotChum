@@ -26,6 +26,9 @@ public class Message {
             case "очисти":
                 command = commands.ClearRequest;
                 break;
+            case "ингредиенты":
+                command = commands.Ingredients;
+                break;
             default:
                 command = commands.Unknown;
         }

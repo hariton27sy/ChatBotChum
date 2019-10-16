@@ -35,6 +35,8 @@ public class BotLogic {
                 }
             case Find:
                 return "Заглушка";
+            case Ingredients:
+                return String.join("\n", database.getAllIngredients());
             case Unknown:
                 return "Я не понял вопроса :-( \nПопробуй написать \"/help\" и узнать о моих возможностях!";
             default:

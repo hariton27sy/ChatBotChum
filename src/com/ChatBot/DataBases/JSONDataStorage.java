@@ -31,8 +31,9 @@ public class JSONDataStorage implements IDataStorage {
         Type type = new TypeToken<HashMap<Integer, Ingredient>>(){}.getType();
         var data = getFileData(this.JSONDirectory + "/Dishes/Ingredients.JSON");
         ingredients = gson.fromJson(data, type);
-        type = new TypeToken<HashMap<String, Integer>>(){}.getType();
-        ingredientsToIds = gson.fromJson(getFileData(this.JSONDirectory + "/Dishes/IngredientToID.JSON"), type);
+        ingredientsToIds = new HashMap<>();
+        for (int id : ingredients.keySet())
+            ingredientsToIds.put(ingredients.get(id).name, id);
         data = getFileData(this.JSONDirectory + "/Dishes/Dishes.JSON");
         type = new TypeToken<HashMap<String, Integer>>(){}.getType();
         recipeNames = gson.fromJson(data, type);
@@ -138,6 +139,15 @@ public class JSONDataStorage implements IDataStorage {
     @Override
     public UserInfo getUserInfo(int userId) {
         return null;
+    }
+
+    @Override
+    public String[] getAllIngredients() {
+        var result = new String[ingredients.size()];
+        int index = 0;
+        for (String key : ingredientsToIds.keySet())
+            result[index++] = key;
+        return result;
     }
 
     @Override
