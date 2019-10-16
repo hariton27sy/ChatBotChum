@@ -12,7 +12,7 @@ public class Message {
     public Message(String originalMessage){
         this.originalMessage = originalMessage;
         time = LocalDateTime.now();
-        String[] splittedMessage = originalMessage.split(" ");
+        String[] splittedMessage = originalMessage.split(" ", 2);
         switch (splittedMessage[0].toLowerCase()){
             case "покажи":
                 command = commands.Show;
@@ -28,6 +28,12 @@ public class Message {
                 break;
             case "ингредиенты":
                 command = commands.Ingredients;
+                break;
+            case "добавлено":
+                command = commands.Added;
+                break;
+            case "выйти": case "выйди":
+                command = commands.Quit;
                 break;
             default:
                 command = commands.Unknown;

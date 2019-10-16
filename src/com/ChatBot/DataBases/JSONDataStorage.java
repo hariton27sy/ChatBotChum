@@ -104,6 +104,8 @@ public class JSONDataStorage implements IDataStorage {
     @Override
     public Recipe getRecipeByRequest(Context context) {
         var recipesIds = context.getRecipesIds();
+        if (recipesIds.size() == 0)
+            return null;
         int random = (int) (Math.random() * recipesIds.size());
         Integer[] recipesList = new Integer[recipesIds.size()];
         recipesIds.toArray(recipesList);

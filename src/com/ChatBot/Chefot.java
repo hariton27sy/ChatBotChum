@@ -30,6 +30,10 @@ public class Chefot {
                 String answer = BotLogic.analyzeAndGetAnswer(
                         userPool.get(i),
                         new Message(userInput));
+                if (answer.equals("Q")) {
+                    bot.send("Пока");
+                    return;
+                }
                 bot.send(answer);
             }
         }

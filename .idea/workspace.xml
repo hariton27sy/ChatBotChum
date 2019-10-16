@@ -3,11 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e75db620-cf67-4c46-922b-368b47e478f6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JSON/Dishes/IngredientToID.JSON" beforeDir="false" afterPath="$PROJECT_DIR$/JSON/Dishes/IngredientToID.JSON" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Chefot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Chefot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/BotLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/Context.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Context.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/Message.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ChatBot/Core/commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/Core/commands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IDataStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/IDataStorage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -144,6 +144,7 @@
       <workItem from="1570946638899" duration="13423000" />
       <workItem from="1571040730143" duration="3033000" />
       <workItem from="1571147632807" duration="5084000" />
+      <workItem from="1571243732541" duration="2819000" />
     </task>
     <servers />
   </component>
@@ -176,42 +177,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="461" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1571152688843" />
-    <state width="1877" height="346" key="GridCell.Tab.0.bottom" timestamp="1571153025267">
+    <state width="1877" height="281" key="GridCell.Tab.0.bottom" timestamp="1571246510602">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="346" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1571153025267" />
-    <state width="1877" height="346" key="GridCell.Tab.0.center" timestamp="1571153025267">
+    <state width="1877" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1571246510602" />
+    <state width="1877" height="281" key="GridCell.Tab.0.center" timestamp="1571246510602">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="346" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1571153025267" />
-    <state width="1877" height="346" key="GridCell.Tab.0.left" timestamp="1571153025267">
+    <state width="1877" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1571246510602" />
+    <state width="1877" height="281" key="GridCell.Tab.0.left" timestamp="1571246510602">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="346" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1571153025267" />
-    <state width="1877" height="346" key="GridCell.Tab.0.right" timestamp="1571153025267">
+    <state width="1877" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1571246510602" />
+    <state width="1877" height="281" key="GridCell.Tab.0.right" timestamp="1571246510602">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="346" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1571153025267" />
-    <state width="1877" height="346" key="GridCell.Tab.1.bottom" timestamp="1571153025267">
+    <state width="1877" height="281" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1571246510602" />
+    <state width="1877" height="346" key="GridCell.Tab.1.bottom" timestamp="1571246271559">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="346" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1571153025267" />
-    <state width="1877" height="346" key="GridCell.Tab.1.center" timestamp="1571153025267">
+    <state width="1877" height="346" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1571246271559" />
+    <state width="1877" height="346" key="GridCell.Tab.1.center" timestamp="1571246271559">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="346" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1571153025267" />
-    <state width="1877" height="346" key="GridCell.Tab.1.left" timestamp="1571153025267">
+    <state width="1877" height="346" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1571246271559" />
+    <state width="1877" height="346" key="GridCell.Tab.1.left" timestamp="1571246271559">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="346" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1571153025267" />
-    <state width="1877" height="346" key="GridCell.Tab.1.right" timestamp="1571153025267">
+    <state width="1877" height="346" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1571246271559" />
+    <state width="1877" height="346" key="GridCell.Tab.1.right" timestamp="1571246271559">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="346" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1571153025267" />
-    <state x="655" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1571147657894">
+    <state width="1877" height="346" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1571246271559" />
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1571243750686">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="655" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1571147657894" />
+    <state x="655" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1571243750686" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1570965201019">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -222,12 +223,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java</url>
-          <line>135</line>
+          <line>137</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/ChatBot/DataBases/JSONDataStorage.java</url>
-          <line>145</line>
+          <line>147</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

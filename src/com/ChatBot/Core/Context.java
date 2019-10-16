@@ -19,6 +19,18 @@ public class Context {
         return recipesIds.size();
     }
 
+    public String ingredientsListToString(){
+        if (ingredients == null)
+            return "";
+
+        var answer = new StringBuilder();
+        for (Ingredient ingr : ingredients){
+            answer.append(ingr.name).append("\n");
+        }
+
+        return answer.toString();
+    }
+
     public HashSet<Integer> getRecipesIds(){
         return recipesIds;
     }
