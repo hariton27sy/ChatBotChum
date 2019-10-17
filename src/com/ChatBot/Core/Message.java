@@ -40,6 +40,5 @@ public class Message {
         }
         args = new String[splittedMessage.length - 1];
         System.arraycopy(splittedMessage, 1, args, 0, args.length);
-        // parseMessage()
     }
 }

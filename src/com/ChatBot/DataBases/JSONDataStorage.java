@@ -52,7 +52,7 @@ public class JSONDataStorage implements IDataStorage {
 
     }
 
-    public static String getFileData(String filePath) {
+    private static String getFileData(String filePath) {
         try{
             var stream = new BufferedReader(new FileReader(filePath));
             var result = new StringBuilder();
