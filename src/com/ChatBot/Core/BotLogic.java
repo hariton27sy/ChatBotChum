@@ -2,14 +2,14 @@ package com.ChatBot.Core;
 
 import com.ChatBot.DataBases.IDataStorage;
 import com.ChatBot.DataBases.JSONDataStorage;
-import jdk.jshell.spi.ExecutionControl;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class BotLogic {
     private static IDataStorage database = new JSONDataStorage();
 
 
     public static String analyzeAndGetAnswer(UserInfo user, Message parsedMessage)
-            throws ExecutionControl.NotImplementedException {
+            throws NotImplementedException {
         if(parsedMessage.originalMessage.equalsIgnoreCase("/help")){
             return "1. Покажи рецепт : завершает поиск или показывает случайный рецепт.\n" +
                     "2. Найди рецепт : формирует запрос на поиск рецепта. (Не работает)\n" +
@@ -60,7 +60,7 @@ public class BotLogic {
             case Quit:
                 return "Q";
             default:
-                throw new ExecutionControl.NotImplementedException("");
+                throw new NotImplementedException();
         }
     }
 }
