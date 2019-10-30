@@ -1,6 +1,6 @@
 package com.ChatBot.Core;
 
-public enum commands {
+public enum Commands {
     Unknown,
     Add,
     Find,

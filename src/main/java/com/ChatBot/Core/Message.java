@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Message {
     public final LocalDateTime time;
     public final String originalMessage;
-    public final commands command;
+    public final Commands command;
     public final String[] args;
     //TODO: intent?
 
@@ -15,28 +15,28 @@ public class Message {
         String[] splittedMessage = originalMessage.split(" ", 2);
         switch (splittedMessage[0].toLowerCase()){
             case "покажи":
-                command = commands.Show;
+                command = Commands.Show;
                 break;
             case "найди":
-                command = commands.Find;
+                command = Commands.Find;
                 break;
             case "добавь":
-                command = commands.Add;
+                command = Commands.Add;
                 break;
             case "очисти":
-                command = commands.ClearRequest;
+                command = Commands.ClearRequest;
                 break;
             case "ингредиенты":
-                command = commands.Ingredients;
+                command = Commands.Ingredients;
                 break;
             case "добавлено":
-                command = commands.Added;
+                command = Commands.Added;
                 break;
             case "выйти": case "выйди":
-                command = commands.Quit;
+                command = Commands.Quit;
                 break;
             default:
-                command = commands.Unknown;
+                command = Commands.Unknown;
         }
         args = new String[splittedMessage.length - 1];
         System.arraycopy(splittedMessage, 1, args, 0, args.length);
