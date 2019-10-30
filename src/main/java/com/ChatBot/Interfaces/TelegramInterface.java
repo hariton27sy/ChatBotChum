@@ -29,7 +29,7 @@ class TelegramBot extends TelegramLongPollingBot{
         var msg = update.getMessage();
         var snd = new SendMessage();
         try {
-            snd.setText(BotLogic.analyzeAndGetAnswer(new UserInfo(msg.getAuthorSignature()),
+            snd.setText(BotLogic.analyzeAndGetAnswer(msg.getChat().getUserName(),
                     new Message(msg.getText())));
         } catch (Exception e) {
             e.printStackTrace();

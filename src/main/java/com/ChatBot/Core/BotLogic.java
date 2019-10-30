@@ -7,7 +7,7 @@ public class BotLogic {
     private static IDataStorage database = new JSONDataStorage();
 
 
-    public static String analyzeAndGetAnswer(UserInfo user, Message parsedMessage)
+    public static String analyzeAndGetAnswer(String username, Message parsedMessage)
             throws Exception {
         if(parsedMessage.originalMessage.equalsIgnoreCase("/help")){
             return "1. Покажи рецепт : завершает поиск или показывает случайный рецепт.\n" +
@@ -19,6 +19,7 @@ public class BotLogic {
                     "7. Выйди / выйти: выходит из программы.";
             //TODO: поиск по тегам.
         }
+        var user = database.getUserInfo(username);
         switch (parsedMessage.command){
             case Add:
                 if (parsedMessage.args.length == 0)
