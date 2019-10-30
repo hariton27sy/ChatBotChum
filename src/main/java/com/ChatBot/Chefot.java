@@ -26,7 +26,7 @@ public class Chefot {
             for(int i = 0; i < userPool.size(); i++){
                 String userInput = bot.receive();
                 String answer = BotLogic.analyzeAndGetAnswer(
-                        userPool.get(i),
+                        userPool.get(i).username,
                         new Message(userInput));
                 if (answer.equals("Q")) {
                     bot.send("Пока");

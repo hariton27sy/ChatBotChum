@@ -15,7 +15,9 @@ import java.util.HashSet;
 public class JSONDataStorage implements IDataStorage {
     private HashMap<Integer, Ingredient> ingredients;
     private HashMap<String, Integer> ingredientsToIds;
-    private HashMap<String, UserInfo> users;
+    private HashMap<String, Integer> usernamesToIds;
+    private HashMap<Integer, UserInfo> users;
+    private int maxUsersId;
     private int maxRecipesId;
     private String JSONDirectory;
     private Gson gson;
@@ -39,6 +41,7 @@ public class JSONDataStorage implements IDataStorage {
         recipeNames = gson.fromJson(data, type);
         maxRecipesId = recipeNames.size();
         loadUsers();
+        maxUsersId = usernamesToIds.size();
     }
 
     public JSONDataStorage() {
@@ -47,8 +50,8 @@ public class JSONDataStorage implements IDataStorage {
 
     private void loadUsers(){
         var data = getFileData(JSONDirectory + "/Users/Users.JSON");
-        var type = new TypeToken<HashMap<String, UserInfo>>(){}.getType();
-        users = gson.fromJson(data, type);
+        var type = new TypeToken<HashMap<String, Integer>>(){}.getType();
+        usernamesToIds = gson.fromJson(data, type);
 
     }
 
@@ -132,15 +135,32 @@ public class JSONDataStorage implements IDataStorage {
 
     @Override
     public UserInfo getUserInfo(String username) {
-        if (users.containsKey(username))
-            return users.get(username);
+        if (users == null)
+            users = new HashMap<>();
 
-        return null;
+        if (usernamesToIds.containsKey(username))
+            return getUserInfo(usernamesToIds.get(username));
+
+        var user = new UserInfo(username);
+
+        users.put(maxUsersId, user);
+        usernamesToIds.put(username, maxUsersId++);
+
+        return user;
     }
 
     @Override
     public UserInfo getUserInfo(int userId) {
-        return null;
+        if (userId < maxUsersId){
+            if (!users.containsKey(userId)){
+                var path = JSONDirectory + "/Users/" + userId + ".JSON";
+                users.put(userId, gson.fromJson(getFileData(path), UserInfo.class));
+            }
+
+            return users.get(userId);
+        }
+
+        throw new IndexOutOfBoundsException();
     }
 
     @Override
@@ -153,7 +173,8 @@ public class JSONDataStorage implements IDataStorage {
     }
 
     @Override
-    public void updateUserInfo(UserInfo user) { }
+    public void updateUsers(UserInfo user) {
+    }
 
     @Override
     public HashSet<Recipe> getAllRecipes() {
