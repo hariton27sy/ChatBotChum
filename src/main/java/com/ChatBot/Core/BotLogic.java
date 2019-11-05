@@ -16,7 +16,8 @@ public class BotLogic {
                     "4. Ингредиенты : показывает все ингредиенты, которые я знаю.\n" +
                     "5. Добавлено : показывает добавленные в запрос ингредиенты.\n" +
                     "6. Очисти запрос: очищает список добавленных ингредиентов\n" +
-                    "7. Выйди / выйти: выходит из программы.";
+                    "7. Выйди / выйти: выходит из программы.\n" +
+                    "8. Удали <индекс ингредиента> : удаляет ингредиент из запроса";
             //TODO: поиск по тегам.
         }
         var user = database.getUserInfo(username);
@@ -57,6 +58,16 @@ public class BotLogic {
             case ClearRequest:
                 user.clearContext();
                 return "Поисковый запрос пуст";
+            case Remove:
+                int index;
+                try{
+                    index = Integer.parseInt(parsedMessage.args[0]);
+                }
+                catch (Exception exc){
+                    return "Неверный индекс ингредиента";
+                }
+                return String.format("По текущему запросу найдено %s блюд. Хотите добавить что-то ещё?",
+                        user.getContext().removeIngredientAndGetRecipesCount(index));
             case Quit:
                 return "Q";
             default:

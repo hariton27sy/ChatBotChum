@@ -32,6 +32,9 @@ public class Message {
             case "добавлено":
                 command = Commands.Added;
                 break;
+            case "удали":
+                command = Commands.Remove;
+                break;
             case "выйти": case "выйди":
                 command = Commands.Quit;
                 break;

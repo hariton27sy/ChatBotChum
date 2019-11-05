@@ -8,5 +8,6 @@ public enum Commands {
     ClearRequest,
     Ingredients,
     Added,
+    Remove,
     Quit
 }
