@@ -1,6 +1,7 @@
 package com.ChatBot.Core;
 
 import java.util.HashSet;
+import org.pcollections.PSet;
 
 public class Context {
     private HashSet<Ingredient> ingredients;

@@ -12,9 +12,8 @@ class BotLogicTests {
 
     @Test
     void analyzeAndGetAnswerHelp() throws Exception {
-        UserInfo user = new UserInfo("Oleg");
         Message parsedMessage = new Message("/help");
-        String actualAnswer = BotLogic.analyzeAndGetAnswer(user, parsedMessage);
+        String actualAnswer = BotLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
         String expectedAnswer = "1. Покажи рецепт : завершает поиск или показывает случайный рецепт.\n" +
                 "2. Найди рецепт : формирует запрос на поиск рецепта. (Не работает)\n" +
                 "3. Добавь <название ингредиента> : добавляет ингредиент в запрос.\n" +
@@ -27,24 +26,22 @@ class BotLogicTests {
 
     @Test
     void analyzeAndGetAnswerRandomAnswer() throws Exception {
-        UserInfo user = new UserInfo("Oleg");
         for(int i = 0; i < 100; i++) {
             Message parsedMessage = new Message("покажи блюдо");
-            String actualAnswer = BotLogic.analyzeAndGetAnswer(user, parsedMessage);
+            String actualAnswer = BotLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
             Assert.assertTrue(actualAnswer.length() > 0);
         }
     }
 
     @Test
     void formRequestAndGetAnswerTest() throws Exception {
-        UserInfo user = new UserInfo("Oleg");
         JSONDataStorage database = new JSONDataStorage();
         for(int i = 0; i < 100; i++) {
             int random = (int) (Math.random() * database.getAllIngredients().length);
             Message parsedMessage = new Message("добавь " + database.getAllIngredients()[random]);
-            BotLogic.analyzeAndGetAnswer(user, parsedMessage);
+            BotLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
             parsedMessage = new Message("покажи блюдо");
-            String answer = BotLogic.analyzeAndGetAnswer(user, parsedMessage);
+            String answer = BotLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
             Assert.assertNotNull(answer);
             Assert.assertTrue(answer.length() > 0);
         }
