@@ -1,13 +1,15 @@
 package com.ChatBot.Core;
 
 import com.ChatBot.DataBases.IDataStorage;
-import com.ChatBot.DataBases.JSONDataStorage;
 
-public class BotLogic {
-    private static IDataStorage database = new JSONDataStorage();
+public class BotLogic implements IBotLogic {
+    private IDataStorage database;
 
+    public BotLogic(IDataStorage dataStorage){
+        database = dataStorage;
+    }
 
-    public static String analyzeAndGetAnswer(String username, Message parsedMessage)
+    public String analyzeAndGetAnswer(String username, Message parsedMessage)
             throws Exception {
         if(parsedMessage.originalMessage.equalsIgnoreCase("/help")){
             return "1. Покажи рецепт : завершает поиск или показывает случайный рецепт.\n" +
@@ -73,5 +75,10 @@ public class BotLogic {
             default:
                 throw new Exception();
         }
+    }
+
+    @Override
+    public void stop() {
+
     }
 }

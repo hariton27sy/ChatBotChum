@@ -1,8 +1,7 @@
 package com.ChatBot.Interfaces;
 
-import com.ChatBot.Core.BotLogic;
+import com.ChatBot.Core.IBotLogic;
 import com.ChatBot.Core.Message;
-import com.ChatBot.Core.UserInfo;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -15,21 +14,37 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class TelegramInterface{
-    public static void main(String[] args) throws TelegramApiRequestException {
+public class TelegramInterface extends TelegramLongPollingBot implements IUserInterface {
+    private IBotLogic botLogic;
+    private String token;
+
+    public TelegramInterface(String tokenFile) throws IOException {
+        var file = new BufferedReader(new FileReader("token.txt"));
+        token = file.readLine();
+    }
+
+    @Override
+    public void initialize(IBotLogic botLogic) {
+        this.botLogic = botLogic;
+    }
+
+    @Override
+    public void start() throws TelegramApiRequestException {
         ApiContextInitializer.init();
         var telegram = new TelegramBotsApi();
-        telegram.registerBot(new TelegramBot());
+        telegram.registerBot(this);
     }
-}
 
-class TelegramBot extends TelegramLongPollingBot{
+    @Override
+    public void stop() {
+    }
+
     @Override
     public void onUpdateReceived(Update update) {
         var msg = update.getMessage();
         var snd = new SendMessage();
         try {
-            snd.setText(BotLogic.analyzeAndGetAnswer(msg.getChat().getUserName(),
+            snd.setText(botLogic.analyzeAndGetAnswer(msg.getChat().getUserName(),
                     new Message(msg.getText())));
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,17 +64,6 @@ class TelegramBot extends TelegramLongPollingBot{
 
     @Override
     public String getBotToken() {
-        try {
-            return readToken();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String readToken() throws IOException {
-        var file = new BufferedReader(new FileReader("token.txt"));
-        return file.readLine();
+        return token;
     }
 }
-

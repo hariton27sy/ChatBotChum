@@ -1,22 +1,48 @@
 package com.ChatBot.Interfaces;
 
-import com.ChatBot.Core.UserInfo;
+import com.ChatBot.Core.IBotLogic;
+import com.ChatBot.Core.Message;
 
 import java.util.Scanner;
 
-public class ConsoleInterface implements InOutInterface {
+public class ConsoleInterface implements IUserInterface {
+    private IBotLogic botLogic;
     private Scanner scanner;
+    private boolean isWorking;
 
-    public ConsoleInterface(){
+    @Override
+    public void initialize(IBotLogic botLogic) {
+        this.botLogic = botLogic;
         scanner = new Scanner(System.in);
     }
 
-
-    public String receive() {
-        return scanner.nextLine();
+    @Override
+    public void start() throws Exception {
+        isWorking = true;
+        mainLoop(login());
     }
 
-    public void send(String answer) {
-        System.out.println(answer);
+    @Override
+    public void stop() {
+        isWorking = false;
+    }
+
+    private void mainLoop(String username) throws Exception {
+        while (isWorking) {
+            var userMessage = scanner.nextLine();
+            var outMessage = botLogic.analyzeAndGetAnswer(username, new Message(userMessage));
+            if (outMessage.equals("Q")){
+                stop();
+                continue;
+            }
+            System.out.println(outMessage);
+        }
+
+        System.out.println("Скоро увидимся!");
+    }
+
+    private String login(){
+        System.out.print("Enter your name: ");
+        return scanner.nextLine();
     }
 }

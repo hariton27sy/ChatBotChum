@@ -1,19 +1,26 @@
 package com.ChatBot.Tests.Core;
 
 import com.ChatBot.Core.BotLogic;
+import com.ChatBot.Core.IBotLogic;
 import com.ChatBot.Core.Message;
-import com.ChatBot.Core.UserInfo;
 import com.ChatBot.DataBases.JSONDataStorage;
 import junit.framework.Assert;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 
 class BotLogicTests {
+    private IBotLogic botLogic;
+
+    @Before
+    protected void setUp() {
+        botLogic = new BotLogic(new JSONDataStorage());
+    }
 
     @Test
     void analyzeAndGetAnswerHelp() throws Exception {
         Message parsedMessage = new Message("/help");
-        String actualAnswer = BotLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
+        String actualAnswer = botLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
         String expectedAnswer = "1. Покажи рецепт : завершает поиск или показывает случайный рецепт.\n" +
                 "2. Найди рецепт : формирует запрос на поиск рецепта. (Не работает)\n" +
                 "3. Добавь <название ингредиента> : добавляет ингредиент в запрос.\n" +
@@ -29,7 +36,7 @@ class BotLogicTests {
     void analyzeAndGetAnswerRandomAnswer() throws Exception {
         for(int i = 0; i < 100; i++) {
             Message parsedMessage = new Message("покажи блюдо");
-            String actualAnswer = BotLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
+            String actualAnswer = botLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
             Assert.assertTrue(actualAnswer.length() > 0);
         }
     }
@@ -40,9 +47,9 @@ class BotLogicTests {
         for(int i = 0; i < 100; i++) {
             int random = (int) (Math.random() * database.getAllIngredients().length);
             Message parsedMessage = new Message("добавь " + database.getAllIngredients()[random]);
-            BotLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
+            botLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
             parsedMessage = new Message("покажи блюдо");
-            String answer = BotLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
+            String answer = botLogic.analyzeAndGetAnswer("Oleg", parsedMessage);
             Assert.assertNotNull(answer);
             Assert.assertTrue(answer.length() > 0);
         }

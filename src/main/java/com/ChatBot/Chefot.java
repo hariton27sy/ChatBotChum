@@ -1,44 +1,23 @@
 package com.ChatBot;
 
 import com.ChatBot.Core.BotLogic;
-import com.ChatBot.Core.Message;
-import com.ChatBot.Core.UserInfo;
+import com.ChatBot.DataBases.IDataStorage;
+import com.ChatBot.DataBases.JSONDataStorage;
 import com.ChatBot.Interfaces.ConsoleInterface;
-import com.ChatBot.Interfaces.InOutInterface;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.ChatBot.Interfaces.IUserInterface;
+import com.ChatBot.Interfaces.TelegramInterface;
 
 public class Chefot {
-    static InOutInterface bot;
-
-    private final static List<UserInfo> userPool = new ArrayList<UserInfo>();
+    private static final IDataStorage dataStorage = new JSONDataStorage();
 
     public static void main(String[] args) throws Exception {
-        bot = new ConsoleInterface();
-        //TODO: Multi-user authentication
-        userPool.add(authenticateUser());
-        bot.send(String.format("Привет, %s!", userPool.get(userPool.size() - 1).username));
-        bot.send("Я - шефот, и могу помочь тебе выбрать блюдо на вечер. Или на утро. Или перекус.\n" +
-                "В общем, не стесняйся, говори, что ты хочешь, а я подскажу ;)\n" +
-                "Для того, чтобы узнать, как со мной работать, напиши '/help'.");
-        while(true){
-            for(int i = 0; i < userPool.size(); i++){
-                String userInput = bot.receive();
-                String answer = BotLogic.analyzeAndGetAnswer(
-                        userPool.get(i).username,
-                        new Message(userInput));
-                if (answer.equals("Q")) {
-                    bot.send("Пока");
-                    return;
-                }
-                bot.send(answer);
-            }
+        IUserInterface bot = new ConsoleInterface();
+        if (args.length > 0 && !args[0].equals("-c")){
+            if (args[0].equals("-t"))
+                bot = new TelegramInterface("token.txt");
         }
-    }
 
-    private static UserInfo authenticateUser() throws Exception {
-        bot.send("Введите ваше имя:");
-        return new UserInfo(bot.receive());
+        bot.initialize(new BotLogic(dataStorage));
+        bot.start();
     }
 }
