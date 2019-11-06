@@ -1,7 +1,7 @@
-package com.ChatBot.Tests.Core;
+package com.ChatBot.Core;
 
-import com.ChatBot.Core.Message;
 import com.ChatBot.Core.Commands;
+import com.ChatBot.Core.Message;
 import junit.framework.Assert;
 import org.junit.jupiter.api.Test;
 

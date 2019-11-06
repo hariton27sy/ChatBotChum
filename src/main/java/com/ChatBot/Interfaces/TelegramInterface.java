@@ -19,7 +19,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     private String token;
 
     public TelegramInterface(String tokenFile) throws IOException {
-        var file = new BufferedReader(new FileReader("token.txt"));
+        var file = new BufferedReader(new FileReader(tokenFile));
         token = file.readLine();
     }
 
@@ -30,7 +30,6 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
 
     @Override
     public void start() throws TelegramApiRequestException {
-        ApiContextInitializer.init();
         var telegram = new TelegramBotsApi();
         telegram.registerBot(this);
     }

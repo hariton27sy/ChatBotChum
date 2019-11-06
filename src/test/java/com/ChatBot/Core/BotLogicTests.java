@@ -1,18 +1,18 @@
-package com.ChatBot.Tests.Core;
+package com.ChatBot.Core;
 
 import com.ChatBot.Core.BotLogic;
 import com.ChatBot.Core.IBotLogic;
 import com.ChatBot.Core.Message;
 import com.ChatBot.DataBases.JSONDataStorage;
 import junit.framework.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 class BotLogicTests {
     private IBotLogic botLogic;
 
-    @Before
+    @BeforeEach
     protected void setUp() {
         botLogic = new BotLogic(new JSONDataStorage());
     }

@@ -1,4 +1,4 @@
-package com.ChatBot.Tests.DataBases;
+package com.ChatBot.DataBases;
 import com.ChatBot.Core.*;
 import com.ChatBot.DataBases.JSONDataStorage;
 import junit.framework.Assert;
