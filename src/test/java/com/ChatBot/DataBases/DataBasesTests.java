@@ -1,7 +1,7 @@
 package com.ChatBot.DataBases;
 import com.ChatBot.Core.*;
 import com.ChatBot.DataBases.JSONDataStorage;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

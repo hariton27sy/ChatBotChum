@@ -41,21 +41,23 @@ public class Context {
     }
 
     public int removeIngredientAndGetRecipesCount(int index){
-        if(index >= ingredients.size()){
+        if(index >= ingredients.size() || index < 0){
             throw new IndexOutOfBoundsException();
         }
         ingredients.remove(index);
-        if(index == ingredients.size() - 1 && recipesIds.size() > 1){
+        if(index == ingredients.size() && recipesIds.size() > 1){
             recipesIds.removeLast();
         }
         else if (ingredients.size() > 0){
             recipesIds.clear();
             PSet<Integer> newPSet = HashTreePSet.from(ingredients.get(0).dishesIds);
             for(int i = 1; i < ingredients.size(); i++) {
-                for (Integer recipe : ingredients.get(i).dishesIds) {
+                PSet<Integer> recipesToRemove = HashTreePSet.empty();
+                for (Integer recipe : newPSet) {
                     if (!ingredients.get(i).dishesIds.contains(recipe))
-                        newPSet = newPSet.minus(recipe);
+                        recipesToRemove = recipesToRemove.plus(recipe);
                 }
+                newPSet = newPSet.minusAll(recipesToRemove);
             }
             recipesIds.add(newPSet);
         }
@@ -80,6 +82,8 @@ public class Context {
 
 
     public Collection<Integer> getRecipesIds(){
+        if(recipesIds.size() == 0)
+            return new ArrayList<>();
         return recipesIds.get(recipesIds.size() - 1);
     }
 }

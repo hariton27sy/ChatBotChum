@@ -2,7 +2,8 @@ package com.ChatBot.Core;
 
 import com.ChatBot.Core.Commands;
 import com.ChatBot.Core.Message;
-import junit.framework.Assert;
+import org.junit.Assert;
+
 import org.junit.jupiter.api.Test;
 
 public class MessageParserTests {

@@ -62,14 +62,16 @@ public class BotLogic implements IBotLogic {
                 return "Поисковый запрос пуст";
             case Remove:
                 int index;
+                String answer;
                 try{
                     index = Integer.parseInt(parsedMessage.args[0]);
+                    answer = String.format("По текущему запросу найдено %s блюд. Хотите добавить что-то ещё?",
+                            user.getContext().removeIngredientAndGetRecipesCount(index));
                 }
                 catch (Exception exc){
                     return "Неверный индекс ингредиента";
                 }
-                return String.format("По текущему запросу найдено %s блюд. Хотите добавить что-то ещё?",
-                        user.getContext().removeIngredientAndGetRecipesCount(index));
+                return answer;
             case Quit:
                 return "Q";
             default:
