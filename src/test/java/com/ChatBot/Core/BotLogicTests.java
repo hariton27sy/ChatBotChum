@@ -1,8 +1,5 @@
 package com.ChatBot.Core;
 
-import com.ChatBot.Core.BotLogic;
-import com.ChatBot.Core.IBotLogic;
-import com.ChatBot.Core.Message;
 import com.ChatBot.DataBases.JSONDataStorage;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
