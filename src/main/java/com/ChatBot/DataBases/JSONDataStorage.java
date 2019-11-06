@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.nio.file.FileSystems;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 
 public class JSONDataStorage implements IDataStorage {
     private HashMap<Integer, Ingredient> ingredients;
@@ -168,7 +169,7 @@ public class JSONDataStorage implements IDataStorage {
         var result = new String[ingredients.size()];
         int index = 0;
         for (String key : ingredientsToIds.keySet())
-            result[index++] = key;
+            result[index++] = key + ", ID: " + ingredientsToIds.get(key);
         return result;
     }
 
@@ -191,5 +192,12 @@ public class JSONDataStorage implements IDataStorage {
             return ingredients.get(ingredientsToIds.get(arg));
 
         return null;
+    }
+
+    @Override
+    public Ingredient getIngredientById(int id){
+        if(ingredients.containsKey(id))
+            return ingredients.get(id);
+        throw new NoSuchElementException("No ingredient exists by given ID");
     }
 }

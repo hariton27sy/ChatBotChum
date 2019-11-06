@@ -73,10 +73,13 @@ public class Context {
             return "";
 
         var answer = new StringBuilder();
+        int counter = 1;
         for (Ingredient ingr : ingredients){
-            answer.append(ingr.name).append("\n");
+            answer.append(counter++)
+                    .append(". ")
+                    .append(ingr.name)
+                    .append("\n");
         }
-
         return answer.toString();
     }
 

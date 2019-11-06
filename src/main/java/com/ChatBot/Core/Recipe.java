@@ -1,5 +1,7 @@
 package com.ChatBot.Core;
 
+import com.ChatBot.DataBases.IDataStorage;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,11 +16,21 @@ public class Recipe {
 
     @Override
     public String toString(){
-        /*StringBuilder answer = new StringBuilder(name + "\n");
-        for(Ingredient ingredient : ingredients)
-            answer.append(ingredient.name).append("\n");
-        return answer.toString();*/
         return name;
+    }
+
+    public String getNameAndIngredients(IDataStorage database){
+        StringBuilder answer = new StringBuilder(name + "\n");
+        int counter = 1;
+        for(Integer ingredient : ingredients)
+            answer.append("   ")
+                    .append(counter++)
+                    .append(". ")
+                    .append(database.getIngredientById(ingredient).name)
+                    .append(", ID: ")
+                    .append(ingredient)
+                    .append("\n");
+        return answer.toString();
     }
 
     public Recipe(){ }

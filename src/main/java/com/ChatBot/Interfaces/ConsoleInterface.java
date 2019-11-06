@@ -19,6 +19,9 @@ public class ConsoleInterface implements IUserInterface {
     @Override
     public void start() throws Exception {
         isWorking = true;
+        System.out.println("Я - шефот, и могу помочь тебе выбрать блюдо на вечер. Или на утро. Или перекус.\n" +
+                "В общем, не стесняйся, говори, что ты хочешь, а я подскажу ;)\n" +
+                        "Для того, чтобы узнать, как со мной работать, напиши '/help'");
         mainLoop(login());
     }
 

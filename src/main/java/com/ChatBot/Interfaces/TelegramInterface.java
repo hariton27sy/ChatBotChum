@@ -32,6 +32,9 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     public void start() throws TelegramApiRequestException {
         var telegram = new TelegramBotsApi();
         telegram.registerBot(this);
+        //Add Я - шефот, и могу помочь тебе выбрать блюдо на вечер. Или на утро. Или перекус.\n" +
+        //                "В общем, не стесняйся, говори, что ты хочешь, а я подскажу ;)\n" +
+        //                "Для того, чтобы узнать, как со мной работать, напиши '/help'.
     }
 
     @Override

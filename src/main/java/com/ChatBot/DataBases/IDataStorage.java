@@ -20,4 +20,5 @@ public interface IDataStorage {
     HashSet<Recipe> getAllRecipes();
 
     Ingredient getIngredientByName(String arg);
+    Ingredient getIngredientById(int id);
 }
