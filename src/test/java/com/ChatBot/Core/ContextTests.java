@@ -55,7 +55,7 @@ public class ContextTests {
     }
 
     @Test
-    void returnsZeroWhenAllIngredientsWereRemoved(){
+    void returnsZero_WhenAllIngredientsWereRemoved(){
         userContext.removeIngredientAndGetRecipesCount(2);
         userContext.removeIngredientAndGetRecipesCount(1);
         int elemCount = userContext.removeIngredientAndGetRecipesCount(0);

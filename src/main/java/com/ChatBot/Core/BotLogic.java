@@ -13,18 +13,24 @@ public class BotLogic implements IBotLogic {
             throws Exception {
         if(parsedMessage.originalMessage.equalsIgnoreCase("/help")){
             return "1. Покажи рецепт : завершает поиск или показывает случайный рецепт.\n" +
-                    "2. Найди рецепт : формирует запрос на поиск рецепта. (Не работает)\n" +
-                    "3. Добавь <название ингредиента> : добавляет ингредиент в запрос.\n" +
-                    "4. Ингредиенты : показывает все ингредиенты, которые я знаю.\n" +
-                    "5. Добавлено : показывает добавленные в запрос ингредиенты.\n" +
-                    "6. Очисти запрос: очищает список добавленных ингредиентов\n" +
-                    "7. Выйди / выйти: выходит из программы.\n" +
-                    "8. Удали <индекс ингредиента> : удаляет ингредиент из запроса";
+                    //"2. Найди рецепт : формирует запрос на поиск рецепта. (Не работает)\n" +
+                    "2. Добавь <название ингредиента> : добавляет ингредиент в запрос.\n" +
+                    "3. Ингредиенты : показывает все ингредиенты, которые я знаю.\n" +
+                    "4. Добавлено : показывает добавленные в запрос ингредиенты.\n" +
+                    "5. Очисти запрос: очищает список добавленных ингредиентов\n" +
+                    "6. Выйди / выйти: выходит из программы.\n" +
+                    "7. Удали <индекс/название ингредиента> : удаляет ингредиент из запроса";
             //TODO: поиск по тегам.
+        }
+
+        if (parsedMessage.originalMessage.equalsIgnoreCase("/start")){
+            return "Я - шефот, и могу помочь тебе выбрать блюдо на вечер. Или на утро. Или перекус.\n" +
+                    "В общем, не стесняйся, говори, что ты хочешь, а я подскажу ;)\n" +
+                    "Для того, чтобы узнать, как со мной работать, напиши '/help'";
         }
         var user = database.getUserInfo(username);
         switch (parsedMessage.command){
-            case Add:
+            case ADD:
                 if (parsedMessage.args.length == 0)
                     return "Я не могу добавить пустой ингредиент :( Пожалуйста введите название ингредиента";
                 Ingredient ingredient = database.getIngredientByName(parsedMessage.args[0]);
@@ -33,8 +39,9 @@ public class BotLogic implements IBotLogic {
                 if (user.getContext() == null)
                     user.initContext();
                 var count = user.getContext().addIngredientAndGetRecipesCount(ingredient);
-                return String.format("По текущему запросу найдено %s блюд. Хотите добавить что-то ещё?", count);
-            case Show:
+                return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
+                        user.getContext().ingredientsListToString(), count);
+            case SHOW:
                 if(user.getContext() == null){
                     return database.getRandomRecipe().getNameAndIngredients(database);
                 }
@@ -46,33 +53,39 @@ public class BotLogic implements IBotLogic {
                     }
                     return answer.getNameAndIngredients(database);
                 }
-            case Find:
+            case FIND:
                 return "Я не работаю, я ем";
-            case Ingredients:
+            case INGREDIENTS:
                 return String.join("\n", database.getAllIngredients());
-            case Unknown:
+            case UNKNOWN:
                 return "Я не понял вопроса :-( \nПопробуй написать \"/help\" и узнать о моих возможностях!";
-            case Added:
+            case ADDED:
                 var context = user.getContext();
                 if (context == null || context.ingredientsListToString().equals(""))
                     return "Вы пока не добавили ни одного ингредиента в запрос. Скорее же сделайте это";
                 return "Пока вы добавили следующие ингредиенты:\n" + context.ingredientsListToString();
-            case ClearRequest:
+            case CLEAR_REQUEST:
                 user.clearContext();
                 return "Поисковый запрос пуст";
-            case Remove:
+            case REMOVE:
                 int index;
-                String answer;
-                try{
+                try {
                     index = Integer.parseInt(parsedMessage.args[0]) - 1;
-                    answer = String.format("По текущему запросу найдено %s блюд. Хотите добавить что-то ещё?",
-                            user.getContext().removeIngredientAndGetRecipesCount(index));
+                    var amount = user.getContext().removeIngredientAndGetRecipesCount(index);
+                    return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
+                            user.getContext().ingredientsListToString(),
+                            amount);
+                } catch (Exception exc) {
+                    try {
+                        var amount =user.getContext().removeIngredientAndGetRecipesCount(parsedMessage.args[0]);
+                        return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
+                                user.getContext().ingredientsListToString(),
+                                amount);
+                    } catch (Exception exc2) {
+                        return "Неверный ингредиент";
+                    }
                 }
-                catch (Exception exc){
-                    return "Неверный индекс ингредиента";
-                }
-                return answer;
-            case Quit:
+            case QUIT:
                 return "Q";
             default:
                 throw new Exception();

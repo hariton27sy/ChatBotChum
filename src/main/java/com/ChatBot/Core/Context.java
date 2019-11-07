@@ -40,6 +40,17 @@ public class Context {
         return recipesIds.getLast().size();
     }
 
+    public int removeIngredientAndGetRecipesCount(String name){
+        int counter = 0;
+        for(Ingredient ingredient : ingredients){
+            if (ingredient.name.equalsIgnoreCase(name)){
+                return removeIngredientAndGetRecipesCount(counter);
+            }
+            counter++;
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
     public int removeIngredientAndGetRecipesCount(int index){
         if(index >= ingredients.size() || index < 0){
             throw new IndexOutOfBoundsException();

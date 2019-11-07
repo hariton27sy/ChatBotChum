@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class DataBasesTests {
 
     @Test
-    void GetRandomRecipeTest(){
+    void getRandomRecipeTest(){
         JSONDataStorage database = new JSONDataStorage();
         Recipe recipe = database.getRandomRecipe();
         Assert.assertNotNull(recipe);
@@ -17,7 +17,7 @@ public class DataBasesTests {
     }
 
     @Test
-    void GetIngredientByNameTest(){
+    void getIngredientByNameTest(){
         JSONDataStorage database = new JSONDataStorage();
         for(int i = 0; i < 100; i++) {
             int random = (int) (Math.random() * database.getAllIngredients().length);
@@ -29,7 +29,7 @@ public class DataBasesTests {
     }
 
     @Test
-    void GetRecipeByRequestTest(){
+    void getRecipeByRequestTest(){
         JSONDataStorage database = new JSONDataStorage();
         for(int i = 0; i < 100; i++) {
             int random = (int) (Math.random() * database.getAllIngredients().length) + 1;

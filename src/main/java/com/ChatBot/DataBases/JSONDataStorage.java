@@ -169,7 +169,7 @@ public class JSONDataStorage implements IDataStorage {
         var result = new String[ingredients.size()];
         int index = 0;
         for (String key : ingredientsToIds.keySet())
-            result[index++] = key + ", ID: " + ingredientsToIds.get(key);
+            result[index++] = key;
         return result;
     }
 

@@ -1,13 +1,13 @@
 package com.ChatBot.Core;
 
 public enum Commands {
-    Unknown,
-    Add,
-    Find,
-    Show,
-    ClearRequest,
-    Ingredients,
-    Added,
-    Remove,
-    Quit
+    UNKNOWN,
+    ADD,
+    FIND,
+    SHOW,
+    CLEAR_REQUEST,
+    INGREDIENTS,
+    ADDED,
+    REMOVE,
+    QUIT
 }

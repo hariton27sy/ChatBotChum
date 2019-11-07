@@ -15,31 +15,31 @@ public class Message {
         String[] splittedMessage = originalMessage.split(" ", 2);
         switch (splittedMessage[0].toLowerCase()){
             case "покажи":
-                command = Commands.Show;
+                command = Commands.SHOW;
                 break;
             case "найди":
-                command = Commands.Find;
+                command = Commands.FIND;
                 break;
             case "добавь":
-                command = Commands.Add;
+                command = Commands.ADD;
                 break;
             case "очисти":
-                command = Commands.ClearRequest;
+                command = Commands.CLEAR_REQUEST;
                 break;
             case "ингредиенты":
-                command = Commands.Ingredients;
+                command = Commands.INGREDIENTS;
                 break;
             case "добавлено":
-                command = Commands.Added;
+                command = Commands.ADDED;
                 break;
             case "удали":
-                command = Commands.Remove;
+                command = Commands.REMOVE;
                 break;
             case "выйти": case "выйди":
-                command = Commands.Quit;
+                command = Commands.QUIT;
                 break;
             default:
-                command = Commands.Unknown;
+                command = Commands.UNKNOWN;
         }
         args = new String[splittedMessage.length - 1];
         System.arraycopy(splittedMessage, 1, args, 0, args.length);

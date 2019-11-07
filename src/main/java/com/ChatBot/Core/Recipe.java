@@ -27,8 +27,8 @@ public class Recipe {
                     .append(counter++)
                     .append(". ")
                     .append(database.getIngredientById(ingredient).name)
-                    .append(", ID: ")
-                    .append(ingredient)
+                    //.append(", ID: ")
+                    //.append(ingredient)
                     .append("\n");
         return answer.toString();
     }
