@@ -1,9 +1,6 @@
 package com.ChatBot.Core;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 import org.pcollections.HashTreePSet;
 import org.pcollections.PSet;
@@ -19,25 +16,29 @@ public class Context {
 
     public int addIngredientAndGetRecipesCount(Ingredient ingredient) {
         if(!ingredients.contains(ingredient)){
-            if (recipesIds.size() == 0){
+            if (recipesIds.size() == 0)
                 recipesIds.add(HashTreePSet.from(ingredient.dishesIds));
-            }
-            else{
-                recipesIds.add(recipesIds.getLast());
-                for(Integer recipe : recipesIds.get(recipesIds.size() - 2)){
-                    if(!ingredient.dishesIds.contains(recipe))
-                        recipesIds.set(recipesIds.size() - 1,
-                                recipesIds.getLast().minus(recipe));
-                }
-            }
+            else
+                recipesIds.add(retainIntegersIn(recipesIds.getLast(), ingredient.dishesIds));
             ingredients.add(ingredient);
         }
+
+        //Reduce amount of allocated memory
         if(recipesIds.getFirst().size() > recipesIds.getLast().size() * 2){
             PSet<Integer> reduceSet = HashTreePSet.from(recipesIds.getLast());
             recipesIds.clear();
             recipesIds.add(reduceSet);
         }
         return recipesIds.getLast().size();
+    }
+
+    private PSet<Integer> retainIntegersIn(PSet<Integer> firstSet, Set<Integer> secondSet){
+        PSet<Integer> retainResult = firstSet;
+        for(Integer integer : firstSet){
+            if(!secondSet.contains(integer))
+                retainResult = retainResult.minus(integer);
+        }
+        return retainResult;
     }
 
     public int removeIngredientAndGetRecipesCount(String name){
@@ -55,21 +56,16 @@ public class Context {
         if(index >= ingredients.size() || index < 0){
             throw new IndexOutOfBoundsException();
         }
+
         ingredients.remove(index);
-        if(index == ingredients.size() && recipesIds.size() > 1){
+        if(index == ingredients.size() && recipesIds.size() > 1)
             recipesIds.removeLast();
-        }
         else if (ingredients.size() > 0){
+            //Recalculate set intersection
             recipesIds.clear();
             PSet<Integer> newPSet = HashTreePSet.from(ingredients.get(0).dishesIds);
-            for(int i = 1; i < ingredients.size(); i++) {
-                PSet<Integer> recipesToRemove = HashTreePSet.empty();
-                for (Integer recipe : newPSet) {
-                    if (!ingredients.get(i).dishesIds.contains(recipe))
-                        recipesToRemove = recipesToRemove.plus(recipe);
-                }
-                newPSet = newPSet.minusAll(recipesToRemove);
-            }
+            for(int i = 1; i < ingredients.size(); i++)
+                newPSet = retainIntegersIn(newPSet, ingredients.get(i).dishesIds);
             recipesIds.add(newPSet);
         }
         else{
@@ -82,7 +78,6 @@ public class Context {
     public String ingredientsListToString(){
         if (ingredients == null)
             return "";
-
         var answer = new StringBuilder();
         int counter = 1;
         for (Ingredient ingr : ingredients){
