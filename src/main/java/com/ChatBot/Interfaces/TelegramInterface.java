@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class TelegramInterface extends TelegramLongPollingBot implements IUserInterface {
@@ -32,7 +33,6 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     }
 
     private static SendMessage makeKeyboardMessage(long chatId){
-
         InlineKeyboardButton addButton = new InlineKeyboardButton();
         InlineKeyboardButton showButton = new InlineKeyboardButton();
         InlineKeyboardButton clearButton = new InlineKeyboardButton();
@@ -40,7 +40,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         InlineKeyboardButton removeIngredientButton = new InlineKeyboardButton();
 
         addButton.setText("Добавить ингредиент");
-        addButton.setCallbackData(":Choose ingredient:");
+        addButton.setCallbackData(":Choose ingredient to add:");
         showButton.setText("Покажи рецепты");
         showButton.setCallbackData(":Show recipes:");
         clearButton.setText("Очисти запрос");
@@ -48,7 +48,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         showIngredientsButton.setText("Покажи доступные ингредиенты");
         showIngredientsButton.setCallbackData(":Show ingredients:");
         removeIngredientButton.setText("Удалить ингредиент");
-        removeIngredientButton.setCallbackData(":Choose ingredient:");
+        removeIngredientButton.setCallbackData(":Choose ingredient to remove:");
 
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
@@ -71,11 +71,24 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         rowList.add(keyboardButtonsRow3);
         rowList.add(keyboardButtonsRow4);
         rowList.add(keyboardButtonsRow5);
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup().setKeyboard(rowList);
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup().setKeyboard(rowList);
         return new SendMessage()
                 .setChatId(chatId)
                 .setText("Вам доступны следующие действия:")
-                .setReplyMarkup(inlineKeyboardMarkup);
+                .setReplyMarkup(keyboard);
+    }
+
+    private static SendMessage makeKeyboardMessageFrom(Collection<String> collection, String query, long chatId){
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        for(String elem : collection){
+            rowList.add(new ArrayList<>() {{
+                add(new InlineKeyboardButton().setText(elem).setCallbackData(query));
+            }});
+        }
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup().setKeyboard(rowList);
+        return new SendMessage()
+                .setChatId(chatId)
+                .setReplyMarkup(keyboard);
     }
 
     @Override
@@ -90,15 +103,26 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
 
     @Override
     public void onUpdateReceived(Update update) {
+        SendMessage snd;
         if(update.hasMessage()){
-            handleUserMessage(update);
+            snd = handleUserMessage(update);
         }
         else if(update.hasCallbackQuery()){
-            handleCallbackQuery(update);
+            snd = handleCallbackQuery(update);
+        }
+        else{
+            snd = null;
+        }
+        try{
+            execute(snd);
+            execute(makeKeyboardMessage(update.getMessage().getChatId()));
+        }
+        catch (Exception exc){
+            exc.printStackTrace();
         }
     }
 
-    private void handleUserMessage(Update update){
+    private SendMessage handleUserMessage(Update update){
         var msg = update.getMessage();
         var snd = new SendMessage();
         try {
@@ -108,35 +132,62 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
             e.printStackTrace();
         }
         snd.setChatId(msg.getChatId());
-        try {
-            execute(snd);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+        return snd;
     }
 
-    private void handleCallbackQuery(Update update){
+    private SendMessage handleCallbackQuery(Update update){
         var data = update.getCallbackQuery().getData();
+        var snd = new SendMessage();
+        var userName = update.getCallbackQuery().getMessage().getChat().getUserName();
         switch (data) {
             case ":Add ingredient:":
-                
+                try {
+                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                            new Message(String.format("добавь %s", update.getCallbackQuery().getInlineMessageId()))));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
-            case ":Choose ingredient:":
-
+            case ":Choose ingredient to add:":
+                // snd = makeKeyboardMessageFrom() TODO: Получение ингредиентов на добавление
+                break;
+            case ":Choose ingredient to remove:":
+                // snd = makeKeyboardMessageFrom() TODO: Получение ингредиентов на удаление
                 break;
             case ":Show recipes:":
-
+                try {
+                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                            new Message("покажи")));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case ":Clear request:":
-
+                try {
+                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                            new Message("очисти")));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case ":Show ingredients:":
-
+                try {
+                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                            new Message("ингредиенты")));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case ":Remove ingredient:":
-
-                break;
+                try {
+                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                            new Message(String.format("удали %s", update.getCallbackQuery().getInlineMessageId()))));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
+        snd.setChatId(update.getCallbackQuery().getMessage().getChatId());
+        return snd;
     }
 
     @Override
