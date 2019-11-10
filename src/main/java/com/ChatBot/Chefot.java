@@ -22,6 +22,7 @@ public class Chefot {
                     bot = new TelegramInterface("token.txt");
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return;
                 }
             }
         }

@@ -45,7 +45,7 @@ public class ConsoleInterface implements IUserInterface {
     }
 
     private String login(){
-        System.out.print("Введи имя:: ");
+        System.out.print("Введи имя: ");
         return scanner.nextLine();
     }
 }
