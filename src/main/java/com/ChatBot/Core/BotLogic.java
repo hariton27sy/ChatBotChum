@@ -2,6 +2,9 @@ package com.ChatBot.Core;
 
 import com.ChatBot.DataBases.IDataStorage;
 
+import java.util.Collection;
+import java.util.List;
+
 public class BotLogic implements IBotLogic {
     private IDataStorage database;
 
@@ -90,6 +93,11 @@ public class BotLogic implements IBotLogic {
             default:
                 throw new Exception();
         }
+    }
+
+    public Collection<String> getAddedIngredients(String username){
+        UserInfo user = database.getUserInfo(username);
+        return user.getContext().getIngredientsAsStringCollection();
     }
 
     @Override

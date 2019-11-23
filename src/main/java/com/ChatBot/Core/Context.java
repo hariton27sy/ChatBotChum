@@ -89,6 +89,12 @@ public class Context {
         return answer.toString();
     }
 
+    public Collection<String> getIngredientsAsStringCollection(){
+        ArrayList<String> result = new ArrayList<>();
+        for(Ingredient ingr : ingredients)
+            result.add(ingr.name);
+        return result;
+    }
 
     public Collection<Integer> getRecipesIds(){
         if(recipesIds.size() == 0)
