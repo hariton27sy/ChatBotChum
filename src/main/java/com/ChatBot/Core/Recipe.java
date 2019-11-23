@@ -33,7 +33,12 @@ public class Recipe {
         return answer.toString();
     }
 
-    public Recipe(){ }
+    public Recipe(String name){
+        this.name = name;
+        ingredients = new HashSet<>();
+        analogs = new HashMap<>();
+        tags = new String[0];
+    }
 
     public Recipe(String name, String[] tags, HashSet<Integer> ingredients,
                   HashMap<Integer, int[]> analogs, String link){

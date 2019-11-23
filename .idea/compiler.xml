@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11">
-      <module name="ChatBotChum" target="10" />
+      <module name="ChatBotChum" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

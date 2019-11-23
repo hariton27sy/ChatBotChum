@@ -3,12 +3,17 @@ package com.ChatBot.DataBases;
 import com.ChatBot.Core.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.json.JSONWriter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -29,8 +34,8 @@ public class JSONDataStorage implements IDataStorage {
         builder.registerTypeAdapter(Recipe.class, new RecipeDeserialize());
         gson = builder.create();*/
         gson = new Gson();
-
         this.JSONDirectory = FileSystems.getDefault().getPath(JSONDirectory).normalize().toAbsolutePath().toString();
+        System.out.println("Path of Database: " + this.JSONDirectory);
         Type type = new TypeToken<HashMap<Integer, Ingredient>>(){}.getType();
         var data = getFileData(this.JSONDirectory + "/Dishes/Ingredients.JSON");
         ingredients = gson.fromJson(data, type);
@@ -199,5 +204,61 @@ public class JSONDataStorage implements IDataStorage {
         if(ingredients.containsKey(id))
             return ingredients.get(id);
         throw new NoSuchElementException("No ingredient exists by given ID");
+    }
+
+    public int addIngredientAndGetId(String ingredientName){
+        if (ingredientsToIds.containsKey(ingredientName))
+            return ingredientsToIds.get(ingredientName);
+
+        var ingr = new Ingredient(ingredientName);
+        ingredientsToIds.put(ingredientName, ingredientsToIds.size() + 1);
+        ingredients.put(ingredientsToIds.get(ingredientName), ingr);
+        return ingredientsToIds.get(ingredientName);
+    }
+
+    public void addRecipe(Recipe recipe){
+        if (recipeNames.containsKey(recipe.name))
+            return;
+        recipeNames.put(recipe.name, recipeNames.size() + 1);
+        for (int ingrId : recipe.ingredients){
+            ingredients.get(ingrId).addDish(recipeNames.get(recipe.name));
+        }
+
+        var text = gson.toJson(recipe);
+        try {
+            var path = JSONDirectory + "/Dishes/" + recipeNames.get(recipe.name) + ".JSON";
+            var writer = new FileWriter(path, StandardCharsets.UTF_8);
+            writer.write(text);
+            writer.flush();
+            recipeNames.put(recipe.name, recipeNames.get(recipe.name));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateFiles() {
+        String ingredientsPath = JSONDirectory + "/Dishes/Ingredients.JSON";
+        String ingredientToIDPath = JSONDirectory + "/Dishes/IngredientsToID.JSON";
+
+        var ingredients = gson.toJson(this.ingredients);
+
+        try {
+            var writer = new FileWriter(ingredientsPath, StandardCharsets.UTF_8);
+            writer.write(ingredients);
+            writer.flush();
+
+            var ingrToId = gson.toJson(ingredientsToIds);
+
+            writer = new FileWriter(ingredientToIDPath);
+            writer.write(ingrToId);
+            writer.flush();
+
+            var dishes = gson.toJson(recipeNames);
+            writer = new FileWriter(JSONDirectory + "/Dishes/Dishes.JSON");
+            writer.write(dishes);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

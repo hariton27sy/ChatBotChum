@@ -13,4 +13,13 @@ public class Ingredient {
         this.name = name;
         this.dishesIds = dishesIds;
     }
+
+    public Ingredient(String name){
+        this.name = name;
+        dishesIds = new HashSet<>();
+    }
+
+    public void addDish(int dishId){
+        dishesIds.add(dishId);
+    }
 }

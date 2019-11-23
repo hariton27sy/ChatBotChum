@@ -82,7 +82,7 @@ public class ParseFromRussianFoodDotCom {
     }
 
     private static void parsePage(String data) {
-        var recipe = new Recipe();
+        var recipe = new Recipe("");
         var matcher = titlePattern.matcher(data);
         recipe.name = data.substring(matcher.start(), matcher.end());
         System.out.println(recipe.name);

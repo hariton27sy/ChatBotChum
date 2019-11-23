@@ -5,7 +5,7 @@
       <configuration sdkName="" />
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_10">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -77,6 +77,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="org.pcollections:pcollections:3.1.0" level="project" />
+    <orderEntry type="library" name="org.assertj:assertj-core:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.telegram:telegrambots:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.telegram:telegrambots-meta:3.5" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject:guice:4.1.0" level="project" />
@@ -128,6 +129,8 @@
     <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter-params:5.6.0-M1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.6.0-M1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.junit.platform:junit-platform-engine:1.6.0-M1" level="project" />
-    <orderEntry type="library" name="org.assertj:assertj-core:3.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.11.3" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.38" level="project" />
+    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.55" level="project" />
   </component>
 </module>
