@@ -21,4 +21,6 @@ public interface IDataStorage {
 
     Ingredient getIngredientByName(String arg);
     Ingredient getIngredientById(int id);
+
+    void close();
 }

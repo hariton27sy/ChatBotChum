@@ -87,6 +87,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         }
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup().setKeyboard(rowList);
         return new SendMessage()
+                .setText("Вам доступны следующие действия:")
                 .setReplyMarkup(keyboard);
     }
 
@@ -102,7 +103,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
 
     @Override
     public void onUpdateReceived(Update update) {
-        SendMessage snd;
+        SendMessage snd = new SendMessage().setText("");
         if(update.hasCallbackQuery()){
             snd = handleCallbackQuery(update);
         }

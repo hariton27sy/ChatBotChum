@@ -1,45 +1,41 @@
-package com.ChatBot.DataBases.ParsersFromSites;
+package com.ChatBot.DataBases;
 
 import com.ChatBot.Core.*;
-import com.ChatBot.DataBases.IDataStorage;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.JSch;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Properties;
 
 public class MySQLDataBase implements IDataStorage{
-    private Connection connection;
+    private Connection dbConnection;
+    private Session sshSession;
+    private Statement statement;
 
     public MySQLDataBase() throws Exception{
         var properties = getPropertiesFromFile("sqlpasswords.txt");
 
-        connectSSH(22, "breakit.ru", properties.get("sshUser"), properties.get("sshPassword"),
+        sshSession = connectSSH(22, "breakit.ru", properties.get("sshUser"), properties.get("sshPassword"),
                 3306, 4009);
 
-        connection = connectDataBase("localhost", 4009, properties.get("dbUser"),
+        dbConnection = connectDataBase("localhost", 4009, properties.get("dbUser"),
                 properties.get("dbPassword"), "chatbotdb");
 
-        var statement = connection.createStatement();
-        var result = statement.executeQuery("show tables in chatbotdb;");
-        result.next();
-        System.out.println(result.getString("Tables_in_chatbotdb"));
-        return;
+        statement = dbConnection.createStatement();
+        statement.executeQuery("set character set 'utf8'");
     }
 
     public static void main(String[] args) {
         try {
             var db = new MySQLDataBase();
+            var recipe = db.getRecipe("Щука");
+            db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,7 +57,12 @@ public class MySQLDataBase implements IDataStorage{
         String driver = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://" + host +":" + port + "/";
         Class.forName(driver);
-        return DriverManager.getConnection(url+dbName, dbUser, dbPassword);
+        var props = new Properties();
+        props.put("user", dbUser);
+        props.put("password", dbPassword);
+        props.put("useUnicode", "true");
+        props.put("characterEncoding", "utf8");
+        return DriverManager.getConnection(url+dbName + "?useSSL=false", props);
     }
 
     private HashMap<String, String> getPropertiesFromFile(String filename) throws IOException {
@@ -78,6 +79,24 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRandomRecipe() {
+        ResultSet result = null;
+        try {
+            result = executeQuery("select * from recipes order by rand() limit 1;");
+            if (result == null || !result.next())
+                return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        var ingredients = new HashSet<Integer>();
+
+
+        try {
+            var recipe = new Recipe(result.getString("name"));
+        } catch (SQLException e) {
+            return null;
+        }
+
         return null;
     }
 
@@ -98,7 +117,24 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRecipe(String recipeName) {
-        return null;
+        ResultSet sqlAnswer;
+        try {
+            var query = String.format("select * from recipes where name = _utf8 \"%s\";", recipeName);
+            sqlAnswer = statement.executeQuery(query);
+            var b = sqlAnswer.next();
+            var recipe = new Recipe(recipeName);
+            recipe.link = sqlAnswer.getString("link");
+            sqlAnswer = statement.executeQuery(String.format("select ingredient_id from recipeingredients where " +
+                    "recipe_id = %s", sqlAnswer.getString("id")));
+            while(sqlAnswer.next()){
+                recipe.ingredients.add(sqlAnswer.getInt("id"));
+            }
+
+            return recipe;
+        }
+        catch (SQLException e){
+            return null;
+        }
     }
 
     @Override
@@ -139,5 +175,26 @@ public class MySQLDataBase implements IDataStorage{
     @Override
     public Ingredient getIngredientById(int id) {
         return null;
+    }
+
+    @Override
+    public void close(){
+        try {
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            dbConnection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sshSession.disconnect();
+    }
+
+    public ResultSet executeQuery(String query) throws SQLException {
+    if (statement.execute(query))
+        return statement.getResultSet();
+    return null;
     }
 }

@@ -62,7 +62,7 @@ public class JSONDataStorage implements IDataStorage {
     }
 
     private static String getFileData(String filePath) {
-        try{
+        try {
             var stream = new BufferedReader(new FileReader(filePath));
             var result = new StringBuilder();
             var line = "";
@@ -204,6 +204,11 @@ public class JSONDataStorage implements IDataStorage {
         if(ingredients.containsKey(id))
             return ingredients.get(id);
         throw new NoSuchElementException("No ingredient exists by given ID");
+    }
+
+    @Override
+    public void close() {
+
     }
 
     public int addIngredientAndGetId(String ingredientName){
