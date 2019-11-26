@@ -152,7 +152,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
 //                snd = new SendMessage().setText("Введите название ингредиента")
 //                break;
             case ":Choose ingredient to remove:":
-                snd = makeKeyboardMessageFrom(botLogic.getAddedIngredients(userName), ":Add ingredient:");
+                snd = makeKeyboardMessageFrom(botLogic.getAddedIngredients(userName), ":Remove ingredient:");
                 break;
             case ":Show recipes:":
                 try {
