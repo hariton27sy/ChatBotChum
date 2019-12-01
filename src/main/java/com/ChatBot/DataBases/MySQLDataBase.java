@@ -198,7 +198,7 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public HashSet<Recipe> getAllRecipes() {
-    }
+    return null;}
 
     @Override
     public Ingredient getIngredientByName(String arg) {
