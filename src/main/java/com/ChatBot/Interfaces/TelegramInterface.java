@@ -82,12 +82,12 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         for(String elem : collection){
             rowList.add(new ArrayList<>() {{
-                add(new InlineKeyboardButton().setText(elem).setCallbackData(query));
+                add(new InlineKeyboardButton().setText(elem).setCallbackData(query + elem));
             }});
         }
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup().setKeyboard(rowList);
         return new SendMessage()
-                .setText("Вам доступны следующие действия:")
+                .setText("Выберите ингредиент для удаления")
                 .setReplyMarkup(keyboard);
     }
 
@@ -103,7 +103,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
 
     @Override
     public void onUpdateReceived(Update update) {
-        SendMessage snd = new SendMessage().setText("");
+        SendMessage snd;
         if(update.hasCallbackQuery()){
             snd = handleCallbackQuery(update);
         }
@@ -111,8 +111,9 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
             snd = handleUserMessage(update);
         }
         else{
-            snd = null;
+            snd = new SendMessage().setText("");
         }
+
         try{
             execute(snd);
             execute(makeKeyboardMessage(update.getMessage().getChatId()));
@@ -139,56 +140,41 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         var data = update.getCallbackQuery().getData();
         var snd = new SendMessage();
         var userName = update.getCallbackQuery().getMessage().getChat().getUserName();
-        switch (data) {
-//            case ":Add ingredient:":
-//                try {
-//                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
-//                            new Message(String.format("добавь %s", update.getCallbackQuery().getInlineMessageId()))));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//            case ":Choose ingredient to add:":
-//                snd = new SendMessage().setText("Введите название ингредиента")
-//                break;
-            case ":Choose ingredient to remove:":
-                snd = makeKeyboardMessageFrom(botLogic.getAddedIngredients(userName), ":Remove ingredient:");
-                break;
-            case ":Show recipes:":
-                try {
-                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
-                            new Message("покажи")));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case ":Clear request:":
-                try {
-                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
-                            new Message("очисти")));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case ":Show ingredients:":
-                try {
-                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
-                            new Message("ингредиенты")));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case ":Remove ingredient:":
-                try {
-                    var test1 = update.getCallbackQuery().getData();
-                    var test2 = update.getCallbackQuery().getInlineMessageId();
-                    var test3 = update.getCallbackQuery().getId();
-                    var test4 = update.getCallbackQuery().getGameShortName();
-                    snd.setText(botLogic.analyzeAndGetAnswer(userName,
-                            new Message(String.format("удали %s", update.getCallbackQuery().getInlineMessageId()))));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        if (":Choose ingredient to remove:".equals(data)) {
+            snd = makeKeyboardMessageFrom(botLogic.getAddedIngredients(userName), ":Remove ingredient:-");
+
+        } else if (":Show recipes:".equals(data)) {
+            try {
+                snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                        new Message("покажи")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (":Clear request:".equals(data)) {
+            try {
+                snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                        new Message("очисти")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (":Show ingredients:".equals(data)) {
+            try {
+                snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                        new Message("ингредиенты")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (data.contains(":Remove ingredient:")) {
+            String ingredientName = data.split("-")[1];
+            try {
+                snd.setText(botLogic.analyzeAndGetAnswer(userName,
+                        new Message(String.format("удали %s", update.getCallbackQuery().getInlineMessageId()))));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         snd.setChatId(update.getCallbackQuery().getMessage().getChatId());
         return snd;
