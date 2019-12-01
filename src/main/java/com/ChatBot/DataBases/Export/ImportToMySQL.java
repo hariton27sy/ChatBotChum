@@ -6,6 +6,7 @@ import com.ChatBot.DataBases.JSONDataStorage;
 import com.ChatBot.DataBases.MySQLDataBase;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ImportToMySQL {
@@ -51,11 +52,12 @@ public class ImportToMySQL {
                     rec.link);
             try {
                 mysqlDataStorage.executeQuery(query);
-                addLinkBetweenRecipeAndIngredient(rec);
             } catch (SQLException e) {
-                if (!e.getMessage().contains("Duplicate entry"))
+                if (!e.getMessage().contains("Duplicate entry")) {
                     e.printStackTrace();
+                }
             }
+            addLinkBetweenRecipeAndIngredient(rec);
 
             rec = getNextRecipe();
         }
@@ -75,15 +77,20 @@ public class ImportToMySQL {
                         .executeQuery(String.format("select id from recipes where name = _utf8 \"%s\"", recipe_name));
                 query.next();
                 var sql_recipe_id = query.getInt("id");
-
-                mysqlDataStorage.executeQuery(String.format(
-                        "insert into recipeingredients (recipe_id, ingredient_id) values (%s, %s)",
-                        sql_recipe_id,
-                        sql_ingredient_id));
+                if (!checkLinkBetweenRecipeIngredientInTheTable(sql_recipe_id, sql_ingredient_id))
+                    mysqlDataStorage.executeQuery(String.format(
+                            "insert into recipeingredients (recipe_id, ingredient_id) values (%s, %s)",
+                            sql_recipe_id,
+                            sql_ingredient_id));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean checkLinkBetweenRecipeIngredientInTheTable(int recipe_id, int ingredient_id) throws SQLException {
+        var resultSet = mysqlDataStorage.executeQuery(String.format("select count(*) from recipeingredients where recipe_id = %s and ingredient_id = %s", recipe_id, ingredient_id));
+        return resultSet.next() && resultSet.getInt("count(*)") > 0;
     }
 
     private String getNextIngredient() {

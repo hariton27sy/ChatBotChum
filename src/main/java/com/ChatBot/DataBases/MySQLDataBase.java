@@ -139,12 +139,48 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRecipe(int recipeId) {
+        ResultSet request = null;
+        try {
+            request = executeQuery("select name from recipes where id = " + recipeId);
+            if (request.next())
+                return getRecipe(request.getString("name"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         return null;
     }
 
     @Override
     public UserInfo getUserInfo(String username) {
-        return null;
+        var user = new UserInfo(username);
+        user.initContext();
+        var context = user.getContext();
+        username = username.replace("\"", "\\\"");
+        try {
+            executeQuery("insert into users (name) values (username)");
+        } catch (SQLException e) {
+            if (!e.getMessage().contains("Duplicate entry")) {
+                e.printStackTrace();
+            }
+        }
+        var user_id = 0;
+        try {
+            var getUserIdQuery = executeQuery("select id from users where name = " + username);
+            getUserIdQuery.next();
+            user_id = getUserIdQuery.getInt("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            var ingredients_ids = executeQuery("select ingredient_id from usercontexts where user_id = " + user_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
     @Override
@@ -158,13 +194,10 @@ public class MySQLDataBase implements IDataStorage{
     }
 
     @Override
-    public void updateUsers(UserInfo user) {
-
-    }
+    public void updateUsers(UserInfo user) { }
 
     @Override
     public HashSet<Recipe> getAllRecipes() {
-        return null;
     }
 
     @Override

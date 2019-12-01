@@ -42,6 +42,7 @@ public class BotLogic implements IBotLogic {
                 if (user.getContext() == null)
                     user.initContext();
                 var count = user.getContext().addIngredientAndGetRecipesCount(ingredient);
+                database.updateUsers(user);
                 return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
                         user.getContext().ingredientsListToString(), count);
             case SHOW:
@@ -69,18 +70,21 @@ public class BotLogic implements IBotLogic {
                 return "Пока вы добавили следующие ингредиенты:\n" + context.ingredientsListToString();
             case CLEAR_REQUEST:
                 user.clearContext();
+                database.updateUsers(user);
                 return "Поисковый запрос пуст";
             case REMOVE:
                 int index;
                 try {
                     index = Integer.parseInt(parsedMessage.args[0]) - 1;
                     var amount = user.getContext().removeIngredientAndGetRecipesCount(index);
+                    database.updateUsers(user);
                     return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
                             user.getContext().ingredientsListToString(),
                             amount);
                 } catch (Exception exc) {
                     try {
                         var amount =user.getContext().removeIngredientAndGetRecipesCount(parsedMessage.args[0]);
+                        database.updateUsers(user);
                         return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
                                 user.getContext().ingredientsListToString(),
                                 amount);
@@ -93,6 +97,7 @@ public class BotLogic implements IBotLogic {
             default:
                 throw new Exception();
         }
+
     }
 
     public Collection<String> getAddedIngredients(String username){

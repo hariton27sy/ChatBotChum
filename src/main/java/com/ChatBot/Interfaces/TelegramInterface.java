@@ -180,6 +180,10 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
                 break;
             case ":Remove ingredient:":
                 try {
+                    var test1 = update.getCallbackQuery().getData();
+                    var test2 = update.getCallbackQuery().getInlineMessageId();
+                    var test3 = update.getCallbackQuery().getId();
+                    var test4 = update.getCallbackQuery().getGameShortName();
                     snd.setText(botLogic.analyzeAndGetAnswer(userName,
                             new Message(String.format("удали %s", update.getCallbackQuery().getInlineMessageId()))));
                 } catch (Exception e) {
