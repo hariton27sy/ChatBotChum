@@ -2,35 +2,23 @@ package com.ChatBot.Interfaces;
 
 import com.ChatBot.Core.IBotLogic;
 import com.ChatBot.Core.Message;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.telegram.telegrambots.ApiContext;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static org.glassfish.jersey.client.ClientProperties.PROXY_PASSWORD;
+import java.util.*;
 
 public class TelegramInterface extends TelegramLongPollingBot implements IUserInterface {
     private IBotLogic botLogic;
     private String token;
+    private HashMap<String, UserActs> usersCurrentAction;
 
     public TelegramInterface(String tokenFile) throws IOException {
         var file = new BufferedReader(new FileReader(tokenFile));
@@ -40,17 +28,18 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     @Override
     public void initialize(IBotLogic botLogic) {
         this.botLogic = botLogic;
+        usersCurrentAction = new HashMap<>();
     }
 
     private static SendMessage makeKeyboardMessage(long chatId){
-//        InlineKeyboardButton addButton = new InlineKeyboardButton();
+        InlineKeyboardButton addButton = new InlineKeyboardButton();
         InlineKeyboardButton showButton = new InlineKeyboardButton();
         InlineKeyboardButton clearButton = new InlineKeyboardButton();
         InlineKeyboardButton showIngredientsButton = new InlineKeyboardButton();
         InlineKeyboardButton removeIngredientButton = new InlineKeyboardButton();
 
-//        addButton.setText("Добавить ингредиент");
-//        addButton.setCallbackData(":Choose ingredient to add:");
+        addButton.setText("Добавить ингредиент");
+        addButton.setCallbackData(":Choose ingredient to add:");
         showButton.setText("Покажи рецепты");
         showButton.setCallbackData(":Show recipes:");
         clearButton.setText("Очисти запрос");
@@ -68,7 +57,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         List<InlineKeyboardButton> keyboardButtonsRow5 = new ArrayList<>();
 
 
-//        keyboardButtonsRow1.add(addButton);
+        keyboardButtonsRow1.add(addButton);
         keyboardButtonsRow2.add(showButton);
         keyboardButtonsRow3.add(clearButton);
         keyboardButtonsRow4.add(showIngredientsButton);
@@ -136,12 +125,13 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     private SendMessage handleUserMessage(Update update){
         var msg = update.getMessage();
         var snd = new SendMessage();
-        try {
-            snd.setText(botLogic.analyzeAndGetAnswer(msg.getChat().getUserName(),
-                    new Message(msg.getText())));
-        } catch (Exception e) {
-            e.printStackTrace();
+        var userName = msg.getChat().getUserName();
+        if(usersCurrentAction.get(userName) == UserActs.Adding){
+            snd.setText(getBotAnswer(userName, "добавь " + msg.getText()));
+            usersCurrentAction.put(userName, UserActs.ChoosingAction);
         }
+        else
+            snd.setText(getBotAnswer(userName, msg.getText()));
         snd.setChatId(msg.getChatId());
         return snd;
     }
@@ -150,44 +140,38 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         var data = update.getCallbackQuery().getData();
         var snd = new SendMessage();
         var userName = update.getCallbackQuery().getMessage().getChat().getUserName();
-        if (":Choose ingredient to remove:".equals(data)) {
+        if (":Choose ingredient to add:".equals(data)){
+            usersCurrentAction.put(userName, UserActs.Adding);
+            snd.setText("Введите название ингредиента:");
+
+        } else if (":Choose ingredient to remove:".equals(data)) {
             snd = makeKeyboardMessageFrom(botLogic.getAddedIngredients(userName), ":Remove ingredient:-");
 
         } else if (":Show recipes:".equals(data)) {
-            try {
-                snd.setText(botLogic.analyzeAndGetAnswer(userName,
-                        new Message("покажи")));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            snd.setText(getBotAnswer(userName, "покажи"));
 
         } else if (":Clear request:".equals(data)) {
-            try {
-                snd.setText(botLogic.analyzeAndGetAnswer(userName,
-                        new Message("очисти")));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            snd.setText(getBotAnswer(userName, "очисти"));
 
         } else if (":Show ingredients:".equals(data)) {
-            try {
-                snd.setText(botLogic.analyzeAndGetAnswer(userName,
-                        new Message("ингредиенты")));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            snd.setText(getBotAnswer(userName, "ингредиенты"));
 
         } else if (data.contains(":Remove ingredient:")) {
             String ingredientName = data.split("-")[1];
-            try {
-                snd.setText(botLogic.analyzeAndGetAnswer(userName,
-                        new Message(String.format("удали %s", update.getCallbackQuery().getInlineMessageId()))));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            snd.setText(getBotAnswer(userName, String.format("удали %s", ingredientName)));
         }
+
         snd.setChatId(update.getCallbackQuery().getMessage().getChatId());
         return snd;
+    }
+
+    private String getBotAnswer(String userName, String message){
+        try {
+            return botLogic.analyzeAndGetAnswer(userName,
+                    new Message(message));
+        } catch (Exception e) {
+            return "Что-то пошло не так. :(";
+        }
     }
 
     @Override
