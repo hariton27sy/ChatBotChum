@@ -35,7 +35,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         InlineKeyboardButton addButton = new InlineKeyboardButton();
         InlineKeyboardButton showButton = new InlineKeyboardButton();
         InlineKeyboardButton clearButton = new InlineKeyboardButton();
-        InlineKeyboardButton showIngredientsButton = new InlineKeyboardButton();
+        //InlineKeyboardButton showIngredientsButton = new InlineKeyboardButton();
         InlineKeyboardButton removeIngredientButton = new InlineKeyboardButton();
 
         addButton.setText("Добавить ингредиент");
@@ -44,8 +44,8 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         showButton.setCallbackData(":Show recipes:");
         clearButton.setText("Очисти запрос");
         clearButton.setCallbackData(":Clear request:");
-        showIngredientsButton.setText("Покажи доступные ингредиенты");
-        showIngredientsButton.setCallbackData(":Show ingredients:");
+        //showIngredientsButton.setText("Покажи доступные ингредиенты");
+        //showIngredientsButton.setCallbackData(":Show ingredients:");
         removeIngredientButton.setText("Удалить ингредиент");
         removeIngredientButton.setCallbackData(":Choose ingredient to remove:");
 
@@ -53,14 +53,14 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow4 = new ArrayList<>();
+        //List<InlineKeyboardButton> keyboardButtonsRow4 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow5 = new ArrayList<>();
 
 
         keyboardButtonsRow1.add(addButton);
         keyboardButtonsRow2.add(showButton);
         keyboardButtonsRow3.add(clearButton);
-        keyboardButtonsRow4.add(showIngredientsButton);
+        //keyboardButtonsRow4.add(showIngredientsButton);
         keyboardButtonsRow5.add(removeIngredientButton);
 
 
@@ -68,7 +68,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         rowList.add(keyboardButtonsRow1);
         rowList.add(keyboardButtonsRow2);
         rowList.add(keyboardButtonsRow3);
-        rowList.add(keyboardButtonsRow4);
+        //rowList.add(keyboardButtonsRow4);
         rowList.add(keyboardButtonsRow5);
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup().setKeyboard(rowList);
         return new SendMessage()
@@ -153,8 +153,8 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         } else if (":Clear request:".equals(data)) {
             snd.setText(getBotAnswer(userName, "очисти"));
 
-        } else if (":Show ingredients:".equals(data)) {
-            snd.setText(getBotAnswer(userName, "ингредиенты"));
+        //} else if (":Show ingredients:".equals(data)) {
+        //    snd.setText(getBotAnswer(userName, "ингредиенты"));
 
         } else if (data.contains(":Remove ingredient:")) {
             String ingredientName = data.split("-")[1];
