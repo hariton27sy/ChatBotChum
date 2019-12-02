@@ -4,14 +4,14 @@ import com.ChatBot.Core.*;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.JSch;
+import org.jsoup.helper.StringUtil;
+import org.junit.platform.commons.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Properties;
+import java.util.*;
 
 public class MySQLDataBase implements IDataStorage{
     private Connection dbConnection;
@@ -32,9 +32,14 @@ public class MySQLDataBase implements IDataStorage{
     }
 
     public static void main(String[] args) {
+        var ingredients = new ArrayList<Integer>();
+        ingredients.add(5);
+        ingredients.add(6);
+        Request request = new Request(ingredients);
         try {
             var db = new MySQLDataBase();
             var recipe = db.getRecipe("Щука");
+            recipe = db.getRecipeByRequest(request);
             db.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,22 +84,13 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRandomRecipe() {
-        ResultSet result = null;
+        ResultSet query = null;
         try {
-            result = executeQuery("select * from recipes order by rand() limit 1;");
-            if (result == null || !result.next())
-                return null;
+            query = executeQuery("select id from recipes order by rand() limit 1;");
+            if (query != null && query.next())
+                return getRecipe(query.getInt("id"));
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
-        }
-        var ingredients = new HashSet<Integer>();
-
-
-        try {
-            var recipe = new Recipe(result.getString("name"));
-        } catch (SQLException e) {
-            return null;
         }
 
         return null;
@@ -107,27 +103,49 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRecipeByRequest(Request request) {
+        var sql_request = new StringBuilder("select * from (select count(*) as count, recipe_id from ");
+        sql_request.append("recipeingredients where ").append("ingredient_id = ")
+                .append(StringUtil.join(request.ingredientIds, " or ingredient_id = "))
+                .append(" group by recipe_id) as t2 where t2.count = ")
+                .append(request.ingredientIds.size());
+
+
+        try {
+            var result = executeQuery(sql_request.toString());
+            if (result != null && result.next())
+                return getRecipe(result.getInt("recipe_id"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
     @Override
     public Recipe getRecipeByRequest(Context context) {
-        return null;
+        var recipesIds = context.getRecipesIds();
+        if (recipesIds.size() == 0)
+            return null;
+        int random = (int) (Math.random() * recipesIds.size());
+        Integer[] recipesList = new Integer[recipesIds.size()];
+        recipesIds.toArray(recipesList);
+        return getRecipe(recipesList[random]);
     }
 
     @Override
     public Recipe getRecipe(String recipeName) {
         ResultSet sqlAnswer;
         try {
+            recipeName = recipeName.replace("\"", "\\\"");
             var query = String.format("select * from recipes where name = _utf8 \"%s\";", recipeName);
             sqlAnswer = statement.executeQuery(query);
             var b = sqlAnswer.next();
             var recipe = new Recipe(recipeName);
             recipe.link = sqlAnswer.getString("link");
             sqlAnswer = statement.executeQuery(String.format("select ingredient_id from recipeingredients where " +
-                    "recipe_id = %s", sqlAnswer.getString("id")));
+                    "recipe_id = %s", sqlAnswer.getInt("id")));
             while(sqlAnswer.next()){
-                recipe.ingredients.add(sqlAnswer.getInt("id"));
+                recipe.ingredients.add(sqlAnswer.getInt("ingredient_id"));
             }
 
             return recipe;
@@ -146,7 +164,6 @@ public class MySQLDataBase implements IDataStorage{
                 return getRecipe(request.getString("name"));
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
 
         return null;
@@ -155,11 +172,9 @@ public class MySQLDataBase implements IDataStorage{
     @Override
     public UserInfo getUserInfo(String username) {
         var user = new UserInfo(username);
-        user.initContext();
-        var context = user.getContext();
-        username = username.replace("\"", "\\\"");
+        username = "\"" + username.replace("\"", "\\\"") + "\"";
         try {
-            executeQuery("insert into users (name) values (username)");
+            executeQuery(String.format("insert into users (name) values (_utf8 %s)", username));
         } catch (SQLException e) {
             if (!e.getMessage().contains("Duplicate entry")) {
                 e.printStackTrace();
@@ -167,7 +182,7 @@ public class MySQLDataBase implements IDataStorage{
         }
         var user_id = 0;
         try {
-            var getUserIdQuery = executeQuery("select id from users where name = " + username);
+            var getUserIdQuery = executeQuery("select id from users where name = _utf8 " + username);
             getUserIdQuery.next();
             user_id = getUserIdQuery.getInt("id");
         } catch (SQLException e) {
@@ -175,11 +190,28 @@ public class MySQLDataBase implements IDataStorage{
         }
 
         try {
-            var ingredients_ids = executeQuery("select ingredient_id from usercontexts where user_id = " + user_id);
+            var ingredients_ids = executeQuery("select ingredient_id from usercontexts where user_id = "
+                    + user_id);
+            user.initContext();
+            var context = user.getContext();
+            boolean isThereIngredients = false;
+            var ingredients = new ArrayList<Integer>();
+            while (ingredients_ids != null && ingredients_ids.next()){
+                isThereIngredients = true;
+                ingredients.add(ingredients_ids.getInt("ingredient_id"));
+            }
+
+            for (var id : ingredients){
+                context.addIngredientAndGetRecipesCount(getIngredientById(id));
+            }
+
+            if (isThereIngredients)
+                return user;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        user.clearContext();
         return user;
     }
 
@@ -194,7 +226,26 @@ public class MySQLDataBase implements IDataStorage{
     }
 
     @Override
-    public void updateUsers(UserInfo user) { }
+    public void updateUser(UserInfo user) {
+        var username = user.username.replace("\"", "\\\"");
+        try {
+            executeQuery(String.format("delete from usercontexts where (select id from users where " +
+                    "name = _utf8 \"%s\");", username));
+            if (user.getContext() == null) {
+                return;
+            }
+            Collection<String> ingredients = user.getContext().getIngredientsAsStringCollection();
+
+            for (var ingr : ingredients){
+                var query = String.format("insert into usercontexts (user_id, ingredient_id) values ((select id from " +
+                        "users where name = _utf8 \"%s\"), (select id from ingredients where name = _utf8 \"%s\"));",
+                        user.username, ingr);
+                executeQuery(query);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public HashSet<Recipe> getAllRecipes() {
@@ -202,11 +253,35 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Ingredient getIngredientByName(String arg) {
+        ResultSet result;
+        try {
+            result = executeQuery(String.format("select * from ingredients where name = _utf8 \"%s\"", arg));
+            if (result != null && result.next()){
+                var ingredient = new Ingredient(arg);
+                result = executeQuery("select recipe_id from recipeingredients where ingredient_id = " +
+                        result.getInt("id"));
+                while (result.next())
+                    ingredient.addDish(result.getInt("recipe_id"));
+                return ingredient;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
     @Override
     public Ingredient getIngredientById(int id) {
+        try{
+            var result = executeQuery("select name from ingredients where id = " + id);
+            if (result != null && result.next())
+                return getIngredientByName(result.getString("name"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 

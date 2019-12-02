@@ -15,7 +15,7 @@ public interface IDataStorage {
     public UserInfo getUserInfo(int userId);
     public String[] getAllIngredients();
 
-    public void updateUsers(UserInfo user);
+    public void updateUser(UserInfo user);
 
     HashSet<Recipe> getAllRecipes();
 

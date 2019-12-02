@@ -179,7 +179,7 @@ public class JSONDataStorage implements IDataStorage {
     }
 
     @Override
-    public void updateUsers(UserInfo user) {
+    public void updateUser(UserInfo user) {
     }
 
     @Override
