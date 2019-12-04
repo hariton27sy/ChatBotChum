@@ -144,7 +144,11 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
             usersCurrentAction.put(userName, UserActs.Adding);
 
         } else if (":Choose ingredient to remove:".equals(data)) {
-            snd = makeKeyboardMessageFrom(botLogic.getAddedIngredients(userName), ":Remove ingredient:-");
+            Collection<String> addedIngredients = botLogic.getAddedIngredients(userName);
+            if(addedIngredients.size() == 0)
+                snd.setText("Тебе нечего удалять! Обманщик!");
+            else
+                snd = makeKeyboardMessageFrom(addedIngredients, ":Remove ingredient:-");
             usersCurrentAction.put(userName, UserActs.Deleting);
 
         } else if (":Show recipe:".equals(data)) {
@@ -156,13 +160,9 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
             usersCurrentAction.put(userName, UserActs.ChoosingAction);
 
         } else if (data.contains(":Remove ingredient:")) {
-            String[] splittedData = data.split("-");
-            if(splittedData.length > 1){
-                String ingredientName = data.split("-")[1];
-                snd.setText(getBotAnswer(userName, String.format("удали %s", ingredientName)));
-            }
-            else
-                snd.setText("Тебе нечего удалять! Обманщик!");
+            String ingredientName = data.split("-")[1];
+            snd.setText(getBotAnswer(userName, String.format("удали %s", ingredientName)));
+
             usersCurrentAction.put(userName, UserActs.ChoosingAction);
         }
 
