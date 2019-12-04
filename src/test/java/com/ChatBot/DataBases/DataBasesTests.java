@@ -2,17 +2,19 @@ package com.ChatBot.DataBases;
 import com.ChatBot.Core.*;
 import com.ChatBot.DataBases.JSONDataStorage;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-public class DataBasesTests {
+class DataBasesTests {
 
-    private ArrayList<IDataStorage> databases;
+    private static ArrayList<IDataStorage> databases;
 
-    @BeforeEach
-    void setUp(){
+    @BeforeAll
+    static void setUp(){
         databases = new ArrayList<>();
         databases.add(new JSONDataStorage());
         try {
@@ -35,11 +37,12 @@ public class DataBasesTests {
     @Test
     void getIngredientByNameTest(){
         for(IDataStorage database : databases){
+            String[] ingredients = database.getAllIngredients();
             for(int i = 0; i < 100; i++) {
-                int random = (int) (Math.random() * database.getAllIngredients().length);
-                Ingredient randomIngredient = database.getIngredientByName(database.getAllIngredients()[random]);
+                int random = (int) (Math.random() * ingredients.length);
+                Ingredient randomIngredient = database.getIngredientByName(ingredients[random]);
                 Assert.assertNotNull(randomIngredient);
-                Assert.assertEquals(database.getAllIngredients()[random], randomIngredient.name);
+                Assert.assertEquals(ingredients[random], randomIngredient.name);
             }
         }
     }
@@ -47,12 +50,13 @@ public class DataBasesTests {
     @Test
     void getRecipeByRequestTest(){
         for(IDataStorage database : databases){
+            int[] ingredients = database.getAllIngredientsIds();
             for(int i = 0; i < 100; i++) {
-                int random = (int) (Math.random() * database.getAllIngredients().length) + 1;
-                ArrayList<Integer> ingredientList = new ArrayList<>();
-                ingredientList.add(random);
-                Request request = new Request(ingredientList);
-                Recipe recipe = database.getRecipeByRequest(request);
+                int random = (int) (Math.random() * ingredients.length);
+                ArrayList<Integer> usedIngredients = new ArrayList<>();
+                usedIngredients.add(ingredients[random]);
+
+                Recipe recipe = database.getRecipeByRequest(new Request(usedIngredients));
                 Assert.assertNotNull(recipe);
                 Assert.assertTrue(recipe.name.length() > 0);
             }

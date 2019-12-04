@@ -14,6 +14,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -179,6 +180,18 @@ public class JSONDataStorage implements IDataStorage {
     }
 
     @Override
+    public int getIngredientId(String ingredient) {
+        if (ingredientsToIds.containsKey(ingredient))
+            return ingredientsToIds.get(ingredient);
+        return 0;
+    }
+
+    @Override
+    public int[] getAllIngredientsIds() {
+        return toIntArray(ingredientsToIds.values());
+    }
+
+    @Override
     public void updateUser(UserInfo user) {
     }
 
@@ -265,5 +278,13 @@ public class JSONDataStorage implements IDataStorage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private int[] toIntArray(Collection<Integer> collection){
+        int[] result = new int[collection.size()];
+        int counter = 0;
+        for (Integer element : collection)
+            result[counter++] = element;
+        return result;
     }
 }

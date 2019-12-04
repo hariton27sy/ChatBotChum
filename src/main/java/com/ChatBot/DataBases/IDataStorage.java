@@ -5,17 +5,19 @@ import com.ChatBot.Core.*;
 import java.util.HashSet;
 
 public interface IDataStorage {
-    public Recipe getRandomRecipe();
-    public Recipe getRecipeByRequest(String username);
-    public Recipe getRecipeByRequest(Request request);
-    public Recipe getRecipeByRequest(Context context);
-    public Recipe getRecipe(String recipeName);
-    public Recipe getRecipe(int recipeId);
-    public UserInfo getUserInfo(String username);
-    public UserInfo getUserInfo(int userId);
-    public String[] getAllIngredients();
+    Recipe getRandomRecipe();
+    Recipe getRecipeByRequest(String username);
+    Recipe getRecipeByRequest(Request request);
+    Recipe getRecipeByRequest(Context context);
+    Recipe getRecipe(String recipeName);
+    Recipe getRecipe(int recipeId);
+    UserInfo getUserInfo(String username);
+    UserInfo getUserInfo(int userId);
+    String[] getAllIngredients();
+    int getIngredientId(String ingredient);
+    int[] getAllIngredientsIds();
 
-    public void updateUser(UserInfo user);
+    void updateUser(UserInfo user);
 
     HashSet<Recipe> getAllRecipes();
 

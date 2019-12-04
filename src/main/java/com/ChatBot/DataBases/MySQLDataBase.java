@@ -5,7 +5,6 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.JSch;
 import org.jsoup.helper.StringUtil;
-import org.junit.platform.commons.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,21 +28,6 @@ public class MySQLDataBase implements IDataStorage{
 
         statement = dbConnection.createStatement();
         statement.executeQuery("set character set 'utf8'");
-    }
-
-    public static void main(String[] args) {
-        var ingredients = new ArrayList<Integer>();
-        ingredients.add(5);
-        ingredients.add(6);
-        Request request = new Request(ingredients);
-        try {
-            var db = new MySQLDataBase();
-            var recipe = db.getRecipe("Щука");
-            recipe = db.getRecipeByRequest(request);
-            db.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private Session connectSSH(int port, String host, String sshUser, String sshPassword, int dbPort, int localDbPort)
@@ -222,7 +206,47 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public String[] getAllIngredients() {
-        return new String[0];
+        ArrayList<String> resultList = new ArrayList<>();
+
+        ResultSet answer = null;
+        try {
+            answer = executeQuery("select name from ingredients");
+            while (answer != null && answer.next()){
+                resultList.add(answer.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultList.toArray(new String[0]);
+    }
+
+    @Override
+    public int getIngredientId(String ingredient) {
+        try {
+            ResultSet answer = executeQuery(String.format("select id from ingredients where name = _utf8 \"%s\"",
+                    ingredient));
+
+            if (answer != null && answer.next())
+                return answer.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    @Override
+    public int[] getAllIngredientsIds() {
+        ArrayList<Integer> ingredientsIds = new ArrayList<>();
+        try {
+            ResultSet answer = executeQuery("select id from ingredients");
+            while (answer != null && answer.next())
+                ingredientsIds.add(answer.getInt(1));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toIntArray(ingredientsIds);
     }
 
     @Override
@@ -237,10 +261,12 @@ public class MySQLDataBase implements IDataStorage{
             Collection<String> ingredients = user.getContext().getIngredientsAsStringCollection();
 
             for (var ingr : ingredients){
-                var query = String.format("insert into usercontexts (user_id, ingredient_id) values ((select id from " +
-                        "users where name = _utf8 \"%s\"), (select id from ingredients where name = _utf8 \"%s\"));",
-                        user.username, ingr);
-                executeQuery(query);
+                if (!isThereRowInUserContexts(user.username, ingr)){
+                    var query = String.format("insert into usercontexts (user_id, ingredient_id) values ((select id from " +
+                                    "users where name = _utf8 \"%s\"), (select id from ingredients where name = _utf8 \"%s\"));",
+                            user.username, ingr);
+                    executeQuery(query);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -304,5 +330,24 @@ public class MySQLDataBase implements IDataStorage{
     if (statement.execute(query))
         return statement.getResultSet();
     return null;
+    }
+
+    private boolean isThereRowInUserContexts(String username, String ingredientName) throws SQLException {
+        var query = String.format("select count(*) as count from " +
+                        "usercontexts where user_id = (select id from users " +
+                        "where name = _utf8 \"%s\") and ingredient_id = " +
+                        "(select id from ingredients where name = _utf8 \"%s\");",
+                username, ingredientName);
+
+        var result = executeQuery(query);
+        return result.next() && result.getInt("count") > 0;
+    }
+
+    private int[] toIntArray(Collection<Integer> collection){
+        int[] result = new int[collection.size()];
+        int counter = 0;
+        for (Integer element : collection)
+            result[counter++] = element;
+        return result;
     }
 }
