@@ -27,10 +27,8 @@ public class Recipe {
                     .append(counter++)
                     .append(". ")
                     .append(database.getIngredientById(ingredient).name)
-                    //.append(", ID: ")
-                    //.append(ingredient)
                     .append("\n");
-        answer.append(link).append('\n');
+        answer.append("Ссылка: ").append(link).append('\n');
         return answer.toString();
     }
 

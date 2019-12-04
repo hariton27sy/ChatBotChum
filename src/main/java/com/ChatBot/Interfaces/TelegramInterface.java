@@ -115,8 +115,10 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
 
         try{
             execute(snd);
-            if(shouldSendKeyboardMessage(userName, chatId))
-                execute(makeKeyboardMessage(update.getMessage().getChatId()));
+            if(shouldSendKeyboardMessage(userName, chatId)){
+                execute(snd);
+                execute(makeKeyboardMessage(chatId));
+            }
         }
         catch (Exception exc){
             exc.printStackTrace();
