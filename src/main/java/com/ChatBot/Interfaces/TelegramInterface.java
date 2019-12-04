@@ -80,7 +80,6 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         }
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup().setKeyboard(rowList);
         return new SendMessage()
-                .setText("Выберите ингредиент для удаления")
                 .setReplyMarkup(keyboard);
     }
 
@@ -148,7 +147,8 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
             if(addedIngredients.size() == 0)
                 snd.setText("Тебе нечего удалять! Обманщик!");
             else
-                snd = makeKeyboardMessageFrom(addedIngredients, ":Remove ingredient:-");
+                snd = makeKeyboardMessageFrom(addedIngredients, ":Remove ingredient:-")
+                        .setText("Выбери ингредиент для удаления");
             usersCurrentAction.put(userName, UserActs.Deleting);
 
         } else if (":Show recipe:".equals(data)) {
