@@ -38,13 +38,4 @@ public class Recipe {
         analogs = new HashMap<>();
         tags = new String[0];
     }
-
-    public Recipe(String name, String[] tags, HashSet<Integer> ingredients,
-                  HashMap<Integer, int[]> analogs, String link){
-        this.name = name;
-        this.tags = tags;
-        this.ingredients = ingredients;
-        this.analogs = analogs;
-        this.link = link;
-    }
 }

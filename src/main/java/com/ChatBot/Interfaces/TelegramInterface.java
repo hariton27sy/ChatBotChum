@@ -37,13 +37,13 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         InlineKeyboardButton clearButton = new InlineKeyboardButton();
         InlineKeyboardButton removeIngredientButton = new InlineKeyboardButton();
 
-        addButton.setText("Добавить ингредиент");
+        addButton.setText("Добавь ингредиент");
         addButton.setCallbackData(":Choose ingredient to add:");
-        showButton.setText("Покажи рецепты");
-        showButton.setCallbackData(":Show recipes:");
+        showButton.setText("Покажи рецепт");
+        showButton.setCallbackData(":Show recipe:");
         clearButton.setText("Очисти запрос");
         clearButton.setCallbackData(":Clear request:");
-        removeIngredientButton.setText("Удалить ингредиент");
+        removeIngredientButton.setText("Удали ингредиент");
         removeIngredientButton.setCallbackData(":Choose ingredient to remove:");
 
 
@@ -67,7 +67,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup().setKeyboard(rowList);
         return new SendMessage()
                 .setChatId(chatId)
-                .setText("Вам доступны следующие действия:")
+                .setText("Тебе доступны следующие действия:")
                 .setReplyMarkup(keyboard);
     }
 

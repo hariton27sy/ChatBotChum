@@ -15,7 +15,7 @@ public class Context {
     }
 
     public int addIngredientAndGetRecipesCount(Ingredient ingredient) {
-        if(!conntainsIngredient(ingredient)){
+        if(!containsIngredient(ingredient)){
             if (recipesIds.size() == 0)
                 recipesIds.add(HashTreePSet.from(ingredient.dishesIds));
             else
@@ -102,12 +102,15 @@ public class Context {
         return recipesIds.get(recipesIds.size() - 1);
     }
 
-    private boolean conntainsIngredient(Ingredient ingredient){
+    public int getRecipesCount(){
+        return recipesIds.getLast().size();
+    }
+
+    private boolean containsIngredient(Ingredient ingredient){
         for(var ingr : ingredients){
             if (ingr.name.equals(ingredient.name))
                 return true;
         }
-
         return false;
     }
 }

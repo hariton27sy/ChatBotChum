@@ -1,11 +1,14 @@
 package com.ChatBot.Core;
 
 import com.ChatBot.DataBases.IDataStorage;
-
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class BotLogic implements IBotLogic {
     private IDataStorage database;
+
+    private HashMap<String, HashSet<String>> shownRecipes = new HashMap<>();
 
     public BotLogic(IDataStorage dataStorage){
         database = dataStorage;
@@ -29,28 +32,35 @@ public class BotLogic implements IBotLogic {
         var user = database.getUserInfo(username);
         switch (parsedMessage.command){
             case ADD:
+                clearShownRecipesFor(user);
                 if (parsedMessage.args.length == 0)
-                    return "Я не могу добавить пустой ингредиент :( Пожалуйста введите название ингредиента";
+                    return "Я не могу добавить пустой ингредиент :( Пожалуйста введи название ингредиента";
                 Ingredient ingredient = database.getIngredientByName(parsedMessage.args[0]);
                 if (ingredient == null)
-                    return "Я не знаю такого ингредиента, попробуйте изменить название :(";
+                    return "Я не знаю такого ингредиента, попробуй изменить название :(";
                 if (user.getContext() == null)
                     user.initContext();
                 var count = user.getContext().addIngredientAndGetRecipesCount(ingredient);
                 database.updateUser(user);
-                return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
+                return String.format("По текущему запросу:\n%s\nя нашёл %s блюд. Хочешь добавить что-то ещё?",
                         user.getContext().ingredientsListToString(), count);
             case SHOW:
                 if(user.getContext() == null){
                     return database.getRandomRecipe().getRecipeDescription(database);
                 }
-                else{
-                    var answer = database.getRecipeByRequest(user.getContext());
-                    user.clearContext();
-                    if (answer == null) {
-                        return "По такому запросу блюд не найдено :( Попробуйте изменить запрос.";
-                    }
+                else if (user.getContext().getRecipesCount() == 0){
+                    return "По текущему запросу я ничего не нашёл. Попробуй изменить запрос, или составить новый :)";
+                }
+                else if (getShownRecipesCountFor(user) < user.getContext().getRecipesCount()){
+                    Recipe answer = getUnshownRecipeFor(user);
+                    addToShownRecipes(user, answer.name);
                     return answer.getRecipeDescription(database);
+                }
+                else{
+                    clearShownRecipesFor(user);
+                    user.clearContext();
+                    database.updateUser(user);
+                    return "Я показал все блюда по текущему запросу. Давай сформируем новый =^_^=";
                 }
             case FIND:
                 return "Я не работаю, я ем";
@@ -61,26 +71,28 @@ public class BotLogic implements IBotLogic {
             case ADDED:
                 var context = user.getContext();
                 if (context == null || context.ingredientsListToString().equals(""))
-                    return "Вы пока не добавили ни одного ингредиента в запрос. Скорее же сделайте это";
-                return "Пока вы добавили следующие ингредиенты:\n" + context.ingredientsListToString();
+                    return "Ты пока не добавил ни одного ингредиента в запрос. Скорее же сделай это";
+                return "Пока ты добавил следующие ингредиенты:\n" + context.ingredientsListToString();
             case CLEAR_REQUEST:
+                clearShownRecipesFor(user);
                 user.clearContext();
                 database.updateUser(user);
                 return "Поисковый запрос пуст";
             case REMOVE:
+                clearShownRecipesFor(user);
                 int index;
                 try {
                     index = Integer.parseInt(parsedMessage.args[0]) - 1;
-                    var amount = user.getContext().removeIngredientAndGetRecipesCount(index);
+                    int amount = user.getContext().removeIngredientAndGetRecipesCount(index);
                     database.updateUser(user);
-                    return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
+                    return String.format("По текущему запросу:\n%s\nя нашёл %s блюд. Хочешь добавить что-то ещё?",
                             user.getContext().ingredientsListToString(),
                             amount);
                 } catch (Exception exc) {
                     try {
-                        var amount =user.getContext().removeIngredientAndGetRecipesCount(parsedMessage.args[0]);
+                        int amount = user.getContext().removeIngredientAndGetRecipesCount(parsedMessage.args[0]);
                         database.updateUser(user);
-                        return String.format("По текущему запросу:\n%s\nнайдено %s блюд. Хотите добавить что-то ещё?",
+                        return String.format("По текущему запросу:\n%s\nя нашёл %s блюд. Хочешь добавить что-то ещё?",
                                 user.getContext().ingredientsListToString(),
                                 amount);
                     } catch (Exception exc2) {
@@ -92,7 +104,30 @@ public class BotLogic implements IBotLogic {
             default:
                 throw new Exception();
         }
+    }
 
+    private void addToShownRecipes(UserInfo user, String recipeName){
+        shownRecipes.computeIfAbsent(user.username, k -> new HashSet<>());
+        shownRecipes.get(user.username).add(recipeName);
+    }
+
+    private void clearShownRecipesFor(UserInfo user){
+        if(shownRecipes.get(user.username) != null)
+            shownRecipes.put(user.username, null);
+    }
+
+    private int getShownRecipesCountFor(UserInfo user){
+        if(shownRecipes.get(user.username) != null)
+            return shownRecipes.get(user.username).size();
+        return 0;
+    }
+
+    private Recipe getUnshownRecipeFor(UserInfo user){
+        Recipe unshownRecipe = database.getRecipeByRequest(user.getContext());
+        while (shownRecipes.get(user.username) != null &&
+                shownRecipes.get(user.username).contains(unshownRecipe.name))
+            unshownRecipe = database.getRecipeByRequest(user.getContext());
+        return unshownRecipe;
     }
 
     public Collection<String> getAddedIngredients(String username){
