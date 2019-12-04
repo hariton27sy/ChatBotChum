@@ -115,10 +115,8 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
 
         try{
             execute(snd);
-            if(shouldSendKeyboardMessage(userName, chatId)){
-                execute(snd);
+            if(shouldSendKeyboardMessage(userName, chatId))
                 execute(makeKeyboardMessage(chatId));
-            }
         }
         catch (Exception exc){
             exc.printStackTrace();
@@ -128,12 +126,12 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     private SendMessage handleUserMessage(Update update, String userName, Long chatId){
         var msg = update.getMessage();
         SendMessage snd = new SendMessage();
-        if(usersCurrentAction.get(userName) == UserActs.Adding){
+        if(usersCurrentAction.get(userName) == UserActs.Adding)
             snd.setText(getBotAnswer(userName, "добавь " + msg.getText()));
-            usersCurrentAction.put(userName, UserActs.ChoosingAction);
-        }
+
         else
             snd.setText(getBotAnswer(userName, msg.getText()));
+        usersCurrentAction.put(userName, UserActs.ChoosingAction);
         snd.setChatId(chatId);
         return snd;
     }
@@ -142,8 +140,8 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         String data = update.getCallbackQuery().getData();
         var snd = new SendMessage();
         if (":Choose ingredient to add:".equals(data)){
-            usersCurrentAction.put(userName, UserActs.Adding);
             snd.setText("Введите название ингредиента:");
+            usersCurrentAction.put(userName, UserActs.Adding);
 
         } else if (":Choose ingredient to remove:".equals(data)) {
             snd = makeKeyboardMessageFrom(botLogic.getAddedIngredients(userName), ":Remove ingredient:-");
