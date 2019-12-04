@@ -29,7 +29,7 @@ public class BotLogic implements IBotLogic {
                     "В общем, не стесняйся, говори, что ты хочешь, а я подскажу ;)\n" +
                     "Для того, чтобы узнать, как со мной работать, напиши '/help'";
         }
-        var user = database.getUserInfo(username);
+        UserInfo user = database.getUserInfo(username);
         switch (parsedMessage.command){
             case ADD:
                 clearShownRecipesFor(user);
@@ -40,7 +40,7 @@ public class BotLogic implements IBotLogic {
                     return "Я не знаю такого ингредиента, попробуй изменить название :(";
                 if (user.getContext() == null)
                     user.initContext();
-                var count = user.getContext().addIngredientAndGetRecipesCount(ingredient);
+                int count = user.getContext().addIngredientAndGetRecipesCount(ingredient);
                 database.updateUser(user);
                 return String.format("По текущему запросу:\n%s\nя нашёл %s блюд. Хочешь добавить что-то ещё?",
                         user.getContext().ingredientsListToString(), count);

@@ -46,7 +46,7 @@ public class MySQLDataBase implements IDataStorage{
         String driver = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://" + host +":" + port + "/";
         Class.forName(driver);
-        var props = new Properties();
+        Properties props = new Properties();
         props.put("user", dbUser);
         props.put("password", dbPassword);
         props.put("useUnicode", "true");
@@ -55,9 +55,9 @@ public class MySQLDataBase implements IDataStorage{
     }
 
     private HashMap<String, String> getPropertiesFromFile(String filename) throws IOException {
-        var file = new BufferedReader(new FileReader(filename));
-        var result = new HashMap<String, String>();
-        var temp = "";
+        BufferedReader file = new BufferedReader(new FileReader(filename));
+        HashMap<String, String> result = new HashMap<String, String>();
+        String temp = "";
         while ((temp = file.readLine()) != null){
             var field = temp.split(":");
             result.put(field[0], field[1]);
@@ -68,7 +68,7 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRandomRecipe() {
-        ResultSet query = null;
+        ResultSet query;
         try {
             query = executeQuery("select id from recipes order by rand() limit 1;");
             if (query != null && query.next())
@@ -87,7 +87,7 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRecipeByRequest(Request request) {
-        var sql_request = new StringBuilder("select * from (select count(*) as count, recipe_id from ");
+        StringBuilder sql_request = new StringBuilder("select * from (select count(*) as count, recipe_id from ");
         sql_request.append("recipeingredients where ").append("ingredient_id = ")
                 .append(StringUtil.join(request.ingredientIds, " or ingredient_id = "))
                 .append(" group by recipe_id) as t2 where t2.count = ")
@@ -95,7 +95,7 @@ public class MySQLDataBase implements IDataStorage{
 
 
         try {
-            var result = executeQuery(sql_request.toString());
+            ResultSet result = executeQuery(sql_request.toString());
             if (result != null && result.next())
                 return getRecipe(result.getInt("recipe_id"));
         } catch (SQLException e) {
@@ -107,7 +107,7 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRecipeByRequest(Context context) {
-        var recipesIds = context.getRecipesIds();
+        Collection<Integer> recipesIds = context.getRecipesIds();
         if (recipesIds.size() == 0)
             return null;
         int random = (int) (Math.random() * recipesIds.size());
@@ -123,7 +123,7 @@ public class MySQLDataBase implements IDataStorage{
             recipeName = recipeName.replace("\"", "\\\"");
             var query = String.format("select * from recipes where name = _utf8 \"%s\";", recipeName);
             sqlAnswer = statement.executeQuery(query);
-            var b = sqlAnswer.next();
+            boolean bool = sqlAnswer.next(); // Для чего это?
             var recipe = new Recipe(recipeName);
             recipe.link = sqlAnswer.getString("link");
             sqlAnswer = statement.executeQuery(String.format("select ingredient_id from recipeingredients where " +
@@ -131,7 +131,6 @@ public class MySQLDataBase implements IDataStorage{
             while(sqlAnswer.next()){
                 recipe.ingredients.add(sqlAnswer.getInt("ingredient_id"));
             }
-
             return recipe;
         }
         catch (SQLException e){
@@ -141,7 +140,7 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public Recipe getRecipe(int recipeId) {
-        ResultSet request = null;
+        ResultSet request;
         try {
             request = executeQuery("select name from recipes where id = " + recipeId);
             if (request.next())
@@ -155,7 +154,7 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public UserInfo getUserInfo(String username) {
-        var user = new UserInfo(username);
+        UserInfo user = new UserInfo(username);
         username = "\"" + username.replace("\"", "\\\"") + "\"";
         try {
             executeQuery(String.format("insert into users (name) values (_utf8 %s)", username));
@@ -164,9 +163,9 @@ public class MySQLDataBase implements IDataStorage{
                 e.printStackTrace();
             }
         }
-        var user_id = 0;
+        int user_id = 0;
         try {
-            var getUserIdQuery = executeQuery("select id from users where name = _utf8 " + username);
+            ResultSet getUserIdQuery = executeQuery("select id from users where name = _utf8 " + username);
             getUserIdQuery.next();
             user_id = getUserIdQuery.getInt("id");
         } catch (SQLException e) {
@@ -174,18 +173,18 @@ public class MySQLDataBase implements IDataStorage{
         }
 
         try {
-            var ingredients_ids = executeQuery("select ingredient_id from usercontexts where user_id = "
+            ResultSet ingredients_ids = executeQuery("select ingredient_id from usercontexts where user_id = "
                     + user_id);
             user.initContext();
-            var context = user.getContext();
+            Context context = user.getContext();
             boolean isThereIngredients = false;
-            var ingredients = new ArrayList<Integer>();
+            ArrayList<Integer> ingredients = new ArrayList<Integer>();
             while (ingredients_ids != null && ingredients_ids.next()){
                 isThereIngredients = true;
                 ingredients.add(ingredients_ids.getInt("ingredient_id"));
             }
 
-            for (var id : ingredients){
+            for (Integer id : ingredients){
                 context.addIngredientAndGetRecipesCount(getIngredientById(id));
             }
 
@@ -208,7 +207,7 @@ public class MySQLDataBase implements IDataStorage{
     public String[] getAllIngredients() {
         ArrayList<String> resultList = new ArrayList<>();
 
-        ResultSet answer = null;
+        ResultSet answer;
         try {
             answer = executeQuery("select name from ingredients");
             while (answer != null && answer.next()){
@@ -251,7 +250,7 @@ public class MySQLDataBase implements IDataStorage{
 
     @Override
     public void updateUser(UserInfo user) {
-        var username = user.username.replace("\"", "\\\"");
+        String username = user.username.replace("\"", "\\\"");
         try {
             executeQuery(String.format("delete from usercontexts where (select id from users where " +
                     "name = _utf8 \"%s\");", username));
@@ -262,7 +261,7 @@ public class MySQLDataBase implements IDataStorage{
 
             for (var ingr : ingredients){
                 if (!isThereRowInUserContexts(user.username, ingr)){
-                    var query = String.format("insert into usercontexts (user_id, ingredient_id) values ((select id from " +
+                    String query = String.format("insert into usercontexts (user_id, ingredient_id) values ((select id from " +
                                     "users where name = _utf8 \"%s\"), (select id from ingredients where name = _utf8 \"%s\"));",
                             user.username, ingr);
                     executeQuery(query);
@@ -301,7 +300,7 @@ public class MySQLDataBase implements IDataStorage{
     @Override
     public Ingredient getIngredientById(int id) {
         try{
-            var result = executeQuery("select name from ingredients where id = " + id);
+            ResultSet result = executeQuery("select name from ingredients where id = " + id);
             if (result != null && result.next())
                 return getIngredientByName(result.getString("name"));
         } catch (SQLException e) {
@@ -333,13 +332,13 @@ public class MySQLDataBase implements IDataStorage{
     }
 
     private boolean isThereRowInUserContexts(String username, String ingredientName) throws SQLException {
-        var query = String.format("select count(*) as count from " +
+        String query = String.format("select count(*) as count from " +
                         "usercontexts where user_id = (select id from users " +
                         "where name = _utf8 \"%s\") and ingredient_id = " +
                         "(select id from ingredients where name = _utf8 \"%s\");",
                 username, ingredientName);
 
-        var result = executeQuery(query);
+        ResultSet result = executeQuery(query);
         return result.next() && result.getInt("count") > 0;
     }
 

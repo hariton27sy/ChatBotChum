@@ -125,12 +125,12 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     private SendMessage handleUserMessage(Update update, String userName, Long chatId){
         var msg = update.getMessage();
         SendMessage snd = new SendMessage();
-        if(usersCurrentAction.get(userName) == UserActs.Adding)
+        if(usersCurrentAction.get(userName) == UserActs.ADDING)
             snd.setText(getBotAnswer(userName, "добавь " + msg.getText()));
 
         else
             snd.setText(getBotAnswer(userName, msg.getText()));
-        usersCurrentAction.put(userName, UserActs.ChoosingAction);
+        usersCurrentAction.put(userName, UserActs.CHOOSING_ACTION);
         snd.setChatId(chatId);
         return snd;
     }
@@ -140,7 +140,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         var snd = new SendMessage();
         if (":Choose ingredient to add:".equals(data)){
             snd.setText("Введи название ингредиента:");
-            usersCurrentAction.put(userName, UserActs.Adding);
+            usersCurrentAction.put(userName, UserActs.ADDING);
 
         } else if (":Choose ingredient to remove:".equals(data)) {
             Collection<String> addedIngredients = botLogic.getAddedIngredients(userName);
@@ -149,30 +149,29 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
             else
                 snd = makeKeyboardMessageFrom(addedIngredients, ":Remove ingredient:-")
                         .setText("Выбери ингредиент для удаления");
-            usersCurrentAction.put(userName, UserActs.Deleting);
+            usersCurrentAction.put(userName, UserActs.DELETING);
 
         } else if (":Show recipe:".equals(data)) {
             snd.setText(getBotAnswer(userName, "покажи"));
-            usersCurrentAction.put(userName, UserActs.ChoosingAction);
+            usersCurrentAction.put(userName, UserActs.CHOOSING_ACTION);
 
         } else if (":Clear request:".equals(data)) {
             snd.setText(getBotAnswer(userName, "очисти"));
-            usersCurrentAction.put(userName, UserActs.ChoosingAction);
+            usersCurrentAction.put(userName, UserActs.CHOOSING_ACTION);
 
         } else if (data.contains(":Remove ingredient:")) {
             String ingredientName = data.split("-")[1];
             snd.setText(getBotAnswer(userName, String.format("удали %s", ingredientName)));
 
-            usersCurrentAction.put(userName, UserActs.ChoosingAction);
+            usersCurrentAction.put(userName, UserActs.CHOOSING_ACTION);
         }
-
         snd.setChatId(chatId);
         return snd;
     }
 
     private Boolean shouldSendKeyboardMessage(String userName, Long chatId){
         return userName != null && chatId != null &&
-                usersCurrentAction.get(userName) == UserActs.ChoosingAction;
+                usersCurrentAction.get(userName) == UserActs.CHOOSING_ACTION;
     }
 
     private String getBotAnswer(String userName, String message){
