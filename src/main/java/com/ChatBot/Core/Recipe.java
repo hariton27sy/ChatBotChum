@@ -19,7 +19,7 @@ public class Recipe {
         return name;
     }
 
-    public String getNameAndIngredients(IDataStorage database){
+    public String getRecipeDescription(IDataStorage database){
         StringBuilder answer = new StringBuilder(name + "\n");
         int counter = 1;
         for(Integer ingredient : ingredients)
@@ -30,6 +30,7 @@ public class Recipe {
                     //.append(", ID: ")
                     //.append(ingredient)
                     .append("\n");
+        answer.append(link).append('\n');
         return answer.toString();
     }
 

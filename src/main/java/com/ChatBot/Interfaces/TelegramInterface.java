@@ -21,7 +21,7 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     private HashMap<String, UserActs> usersCurrentAction;
 
     public TelegramInterface(String tokenFile) throws IOException {
-        var file = new BufferedReader(new FileReader(tokenFile));
+        BufferedReader file = new BufferedReader(new FileReader(tokenFile));
         token = file.readLine();
     }
 
@@ -35,7 +35,6 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         InlineKeyboardButton addButton = new InlineKeyboardButton();
         InlineKeyboardButton showButton = new InlineKeyboardButton();
         InlineKeyboardButton clearButton = new InlineKeyboardButton();
-        //InlineKeyboardButton showIngredientsButton = new InlineKeyboardButton();
         InlineKeyboardButton removeIngredientButton = new InlineKeyboardButton();
 
         addButton.setText("Добавить ингредиент");
@@ -44,8 +43,6 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         showButton.setCallbackData(":Show recipes:");
         clearButton.setText("Очисти запрос");
         clearButton.setCallbackData(":Clear request:");
-        //showIngredientsButton.setText("Покажи доступные ингредиенты");
-        //showIngredientsButton.setCallbackData(":Show ingredients:");
         removeIngredientButton.setText("Удалить ингредиент");
         removeIngredientButton.setCallbackData(":Choose ingredient to remove:");
 
@@ -53,23 +50,20 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
-        //List<InlineKeyboardButton> keyboardButtonsRow4 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow5 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow4 = new ArrayList<>();
 
 
         keyboardButtonsRow1.add(addButton);
         keyboardButtonsRow2.add(showButton);
         keyboardButtonsRow3.add(clearButton);
-        //keyboardButtonsRow4.add(showIngredientsButton);
-        keyboardButtonsRow5.add(removeIngredientButton);
+        keyboardButtonsRow4.add(removeIngredientButton);
 
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
         rowList.add(keyboardButtonsRow2);
         rowList.add(keyboardButtonsRow3);
-        //rowList.add(keyboardButtonsRow4);
-        rowList.add(keyboardButtonsRow5);
+        rowList.add(keyboardButtonsRow4);
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup().setKeyboard(rowList);
         return new SendMessage()
                 .setChatId(chatId)
@@ -103,11 +97,17 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
     @Override
     public void onUpdateReceived(Update update) {
         SendMessage snd;
+        String userName = null;
+        Long chatId = null;
         if(update.hasCallbackQuery()){
-            snd = handleCallbackQuery(update);
+            userName = update.getCallbackQuery().getMessage().getChat().getUserName();
+            chatId = update.getCallbackQuery().getMessage().getChatId();
+            snd = handleCallbackQuery(update, userName, chatId);
         }
         else if(update.hasMessage()){
-            snd = handleUserMessage(update);
+            userName = update.getMessage().getChat().getUserName();
+            chatId = update.getMessage().getChatId();
+            snd = handleUserMessage(update, userName, chatId);
         }
         else{
             snd = new SendMessage().setText("");
@@ -115,54 +115,59 @@ public class TelegramInterface extends TelegramLongPollingBot implements IUserIn
 
         try{
             execute(snd);
-            execute(makeKeyboardMessage(update.getMessage().getChatId()));
+            if(shouldSendKeyboardMessage(userName, chatId))
+                execute(makeKeyboardMessage(update.getMessage().getChatId()));
         }
         catch (Exception exc){
             exc.printStackTrace();
         }
     }
 
-    private SendMessage handleUserMessage(Update update){
+    private SendMessage handleUserMessage(Update update, String userName, Long chatId){
         var msg = update.getMessage();
-        var snd = new SendMessage();
-        var userName = msg.getChat().getUserName();
+        SendMessage snd = new SendMessage();
         if(usersCurrentAction.get(userName) == UserActs.Adding){
             snd.setText(getBotAnswer(userName, "добавь " + msg.getText()));
             usersCurrentAction.put(userName, UserActs.ChoosingAction);
         }
         else
             snd.setText(getBotAnswer(userName, msg.getText()));
-        snd.setChatId(msg.getChatId());
+        snd.setChatId(chatId);
         return snd;
     }
 
-    private SendMessage handleCallbackQuery(Update update){
-        var data = update.getCallbackQuery().getData();
+    private SendMessage handleCallbackQuery(Update update, String userName, Long chatId){
+        String data = update.getCallbackQuery().getData();
         var snd = new SendMessage();
-        var userName = update.getCallbackQuery().getMessage().getChat().getUserName();
         if (":Choose ingredient to add:".equals(data)){
             usersCurrentAction.put(userName, UserActs.Adding);
             snd.setText("Введите название ингредиента:");
 
         } else if (":Choose ingredient to remove:".equals(data)) {
             snd = makeKeyboardMessageFrom(botLogic.getAddedIngredients(userName), ":Remove ingredient:-");
+            usersCurrentAction.put(userName, UserActs.ChoosingAction);
 
         } else if (":Show recipes:".equals(data)) {
             snd.setText(getBotAnswer(userName, "покажи"));
+            usersCurrentAction.put(userName, UserActs.ChoosingAction);
 
         } else if (":Clear request:".equals(data)) {
             snd.setText(getBotAnswer(userName, "очисти"));
-
-        //} else if (":Show ingredients:".equals(data)) {
-        //    snd.setText(getBotAnswer(userName, "ингредиенты"));
+            usersCurrentAction.put(userName, UserActs.ChoosingAction);
 
         } else if (data.contains(":Remove ingredient:")) {
             String ingredientName = data.split("-")[1];
             snd.setText(getBotAnswer(userName, String.format("удали %s", ingredientName)));
+            usersCurrentAction.put(userName, UserActs.ChoosingAction);
         }
 
-        snd.setChatId(update.getCallbackQuery().getMessage().getChatId());
+        snd.setChatId(chatId);
         return snd;
+    }
+
+    private Boolean shouldSendKeyboardMessage(String userName, Long chatId){
+        return userName != null && chatId != null &&
+                usersCurrentAction.get(userName) == UserActs.ChoosingAction;
     }
 
     private String getBotAnswer(String userName, String message){

@@ -46,7 +46,7 @@ public class BotLogic implements IBotLogic {
                         user.getContext().ingredientsListToString(), count);
             case SHOW:
                 if(user.getContext() == null){
-                    return database.getRandomRecipe().getNameAndIngredients(database);
+                    return database.getRandomRecipe().getRecipeDescription(database);
                 }
                 else{
                     var answer = database.getRecipeByRequest(user.getContext());
@@ -54,7 +54,7 @@ public class BotLogic implements IBotLogic {
                     if (answer == null) {
                         return "По такому запросу блюд не найдено :( Попробуйте изменить запрос.";
                     }
-                    return answer.getNameAndIngredients(database);
+                    return answer.getRecipeDescription(database);
                 }
             case FIND:
                 return "Я не работаю, я ем";
