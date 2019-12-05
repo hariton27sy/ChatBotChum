@@ -20,7 +20,7 @@ public class ImportToMySQL {
         currentIndex = 1;
         recId = 1;
         try {
-            mysqlDataStorage = new MySQLDataBase();
+            mysqlDataStorage = new MySQLDataBase("sqlpasswords.txt");
             importRecipes();
         } catch (Exception e) {
             e.printStackTrace();

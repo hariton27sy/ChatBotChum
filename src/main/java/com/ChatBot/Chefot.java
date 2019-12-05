@@ -16,20 +16,32 @@ public class Chefot {
     private static IDataStorage dataStorage = new JSONDataStorage();
 
     public static void main(String[] args){
-        try{
-            dataStorage = new MySQLDataBase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         IUserInterface bot = new ConsoleInterface();
         if (args.length > 0 && !args[0].equals("-c")){
             if (args[0].equals("-t")) {
+                if (args.length < 2){
+                    System.out.println("You need to give path to a file with token");
+                    return;
+                }
                 try {
                     ApiContextInitializer.init();
-                    bot = new TelegramInterface("token.txt");
+                    bot = new TelegramInterface(args[1]);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return;
+                }
+            }
+
+            if (args[0].equals("-sql") || args.length > 2 && args[2].equals("-sql")){
+                if (args.length < 2 || args.length > 2 && args[2].equals("-sql") && args.length < 4){
+                    System.out.println("You need to give path to a file with sql settings");
+                    return;
+                }
+                try{
+                    dataStorage = new MySQLDataBase((args.length < 3) ? args[1] : args[3]);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

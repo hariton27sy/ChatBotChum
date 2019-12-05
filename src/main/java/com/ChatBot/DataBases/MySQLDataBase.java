@@ -17,11 +17,14 @@ public class MySQLDataBase implements IDataStorage{
     private Session sshSession;
     private Statement statement;
 
-    public MySQLDataBase() throws Exception{
-        var properties = getPropertiesFromFile("sqlpasswords.txt");
-
-        sshSession = connectSSH(22, "breakit.ru", properties.get("sshUser"), properties.get("sshPassword"),
-                3306, 4009);
+    public MySQLDataBase(String configurationPath) throws Exception{
+        var properties = getPropertiesFromFile(configurationPath);
+        int port = 3306;
+        if (properties.containsKey("sshUser")){
+            sshSession = connectSSH(22, properties.get("host"), properties.get("sshUser"), properties.get("sshPassword"),
+                    3306, 4009);
+            port = 4009;
+        }
 
         dbConnection = connectDataBase("localhost", 4009, properties.get("dbUser"),
                 properties.get("dbPassword"), "chatbotdb");
